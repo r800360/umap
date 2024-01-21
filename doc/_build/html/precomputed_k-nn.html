@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Precomputed k-nn &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performance Comparison of Dimension Reduction Implementations" href="benchmarking.html" />
+    <link rel="prev" title="AlignedUMAP for Time Varying Data" href="aligned_umap_politics_demo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Precomputed k-nn</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#practical-uses">Practical Uses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#trying-umap-with-various-parameters">Trying UMAP with various parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reproducibility">Reproducibility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#standard-case">Standard Case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reproducing-normal-umap-with-precomputed-knn">Reproducing normal UMAP with precomputed_knn</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Precomputed k-nn</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/precomputed_k-nn.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="precomputed-k-nn">
+<h1>Precomputed k-nn<a class="headerlink" href="#precomputed-k-nn" title="Permalink to this heading"></a></h1>
+<p>The purpose of this tutorial is to explore some cases where using a
+precomputed_knn might be useful and then discuss how we can obtain
+reproducible results with it.</p>
+<section id="practical-uses">
+<h2>Practical Uses<a class="headerlink" href="#practical-uses" title="Permalink to this heading"></a></h2>
+<section id="trying-umap-with-various-parameters">
+<h3>Trying UMAP with various parameters<a class="headerlink" href="#trying-umap-with-various-parameters" title="Permalink to this heading"></a></h3>
+<p>Let’s look at how we can use precomputed_knn to save time. First we will
+test it out on MNIST which has 70,000 samples of 784 dimensions. If we
+want to test out a series of n_neighbors and min_dist parameters, we
+might lose quite a bit of time recomputing the knn matrices for our
+data. Instead, we can compute the knn for the largest n_neighbors we
+wish to analyze and then feed that precomputed_knn to UMAP. UMAP will
+automatically prune it to the right n_neighbors value and skip the
+nearest neighbors step, saving us a lot of time.</p>
+<p>We note that we don’t use a random state in order to leverage UMAP’s
+parallelization and speed up the calculations.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">umap</span>
+<span class="kn">import</span> <span class="nn">umap.plot</span>
+<span class="kn">from</span> <span class="nn">umap.umap_</span> <span class="kn">import</span> <span class="n">nearest_neighbors</span>
+
+<span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s1">&#39;mnist_784&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="n">n_neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">]</span>
+<span class="n">min_dists</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="n">normal_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">70000</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">precomputed_knn_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">70000</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="c1"># UMAP run on the grid of parameters without precomputed_knn</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">min_dists</span><span class="p">):</span>
+        <span class="n">normal_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                                            <span class="n">min_dist</span><span class="o">=</span><span class="n">dist</span><span class="p">,</span>
+                                           <span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Time taken to compute UMAP on grid of parameters:</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre class="literal-block"><strong>Time taken to compute UMAP on grid of parameters:</strong>
+Wall time: 31min 57s</pre>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="c1"># UMAP run on list of n_neighbors without precomputed_knn</span>
+
+<span class="c1"># We compute the knn for max(n_neighbors)=250</span>
+<span class="n">mnist_knn</span> <span class="o">=</span> <span class="n">nearest_neighbors</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                              <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+                              <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+                              <span class="n">metric_kwds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">angular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                              <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="p">)</span>
+<span class="c1"># Now we compute the embeddings for the grid of parameters</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">min_dists</span><span class="p">):</span>
+        <span class="n">precomputed_knn_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                                                      <span class="n">min_dist</span><span class="o">=</span><span class="n">dist</span><span class="p">,</span>
+                                                      <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">mnist_knn</span><span class="p">,</span>
+                                                      <span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Time taken to compute UMAP on grid of parameters with precomputed_knn:</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre class="literal-block"><strong>Time taken to compute UMAP on grid of parameters with precomputed_knn:</strong>
+Wall time: 17min 54s</pre>
+<p>Using a precomputed_knn we have cut the computation time in half!
+Observe that half of our n_neighbors values are relatively small. If
+instead, we had had a higher distribution of values, the time savings
+would have been even greater. Additionaly, we could’ve saved even more
+time by first computing UMAP normally with an <em>n_neighbors</em> value of 250
+and then extracting the k-nn graph from that UMAP object.</p>
+<p>With this, we can easily visualize how the n_neighbors parameter affects
+our embedding.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax_row</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">precomputed_knn_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="n">precomputed_knn_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span>
+                   <span class="n">c</span><span class="o">=</span><span class="n">labels</span> <span class="o">/</span> <span class="mi">9</span><span class="p">,</span>
+                   <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span>
+                   <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                   <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;min_dist = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">min_dists</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;n_neighbors = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;UMAP embedding of MNIST digits with grid of parameters&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.92</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/precomputed_k-nn6.png" src="_images/precomputed_k-nn6.png" />
+<p>We see that in this case, the embedding is robust to the choice of
+n_neighbors and that lower min_dist values simply pack the clusters more
+tightly.</p>
+</section>
+</section>
+<section id="reproducibility">
+<h2>Reproducibility<a class="headerlink" href="#reproducibility" title="Permalink to this heading"></a></h2>
+<p>We strongly recommend that you review the UMAP <a class="reference external" href="https://umap-learn.readthedocs.io/en/latest/reproducibility.html">reproducibility
+section</a>
+in the docs before attempting to reproduce results with
+<em>precomputed_knn</em>.</p>
+<section id="standard-case">
+<h3>Standard Case<a class="headerlink" href="#standard-case" title="Permalink to this heading"></a></h3>
+<p>Out of the box, UMAP with precomputed_knn supports creating reproducible
+results. This works in exactly the same way as regular UMAP, where, the
+user can set a random seed state to ensure that results can be reproduced
+exactly. However, some important considerations must be taken into account.</p>
+<p>UMAP embeddings are entirely dependent on first, computing the graphical
+representation in higher dimensions and second, learning an embedding
+that preserves the structure of that graph. Recall that our graphical
+representation is based on the k-nn graph of our data. If we have two
+different k-nn graphs, then we will naturally have two different
+graphical representations of our data. Therefore, <strong>we can only ensure
+reproducible results when we use the same k-nn graph</strong>. In our case,
+this means that all reproducible results are tied to three values:</p>
+<ol><li><p>The random seed when computing the k-nn.</p>
+</li><li><p>The n_neighbors value when computing the k-nn.</p>
+</li><li><p>The random seed when running UMAP.</p>
+</li></ol><p>Two different runs of UMAP, with these three values being equal, are
+guaranteed to return the same result. Let’s look at how this works with
+an example. To do this, we’ll create some data to work with; three
+random blobs in 60-dimensional space.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1700</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">y</span><span class="o">+</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">20</span><span class="p">))</span>
+<span class="n">synthetic_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">repeats</span><span class="o">=</span><span class="mi">1700</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With the data in hand, we can fix the three parameters listed above and
+see how two different UMAP runs give the same result. To avoid confusion
+we’ll assume that the UMAP random seed is the same value as the knn
+random seed.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">umap.plot</span>
+<span class="n">random_seed</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">knn</span> <span class="o">=</span> <span class="n">nearest_neighbors</span><span class="p">(</span>
+                        <span class="n">X</span><span class="p">,</span>
+                        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                        <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span>
+                        <span class="n">metric_kwds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">angular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+<span class="n">knn_umap</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">knn</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">knn_umap2</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">knn</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">knn_umap</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">knn_umap2</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Precomuted knn 1st run&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Precomuted knn 2nd run&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Are the embeddings for knn_umap and knn_umap2 the same?</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">knn_umap</span><span class="o">.</span><span class="n">embedding_</span> <span class="o">==</span> <span class="n">knn_umap2</span><span class="o">.</span><span class="n">embedding_</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<img alt="_images/precomputed_k-nn11.png" src="_images/precomputed_k-nn11.png" />
+<pre class="literal-block"><strong>Are the embeddings for knn_umap and knn_umap2 the same?</strong>
+True</pre>
+<p>As we can see, by fixing the <em>random_seed</em> and the <em>n_neighbors</em> for the
+knn, we have been able to obtain identical results from both UMAP runs.
+In contrast, if these differ, we can’t gaurantee the same result.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_seed2</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c1"># Different n_neighbors</span>
+<span class="n">knn3</span> <span class="o">=</span> <span class="n">nearest_neighbors</span><span class="p">(</span>
+                        <span class="n">X</span><span class="p">,</span>
+                        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                        <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span>
+                        <span class="n">metric_kwds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">angular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
+                        <span class="p">)</span>
+<span class="c1"># Different random seed</span>
+<span class="n">knn4</span> <span class="o">=</span> <span class="n">nearest_neighbors</span><span class="p">(</span>
+                        <span class="n">X</span><span class="p">,</span>
+                        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                        <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span>
+                        <span class="n">metric_kwds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">angular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed2</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+<span class="n">knn_umap3</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">knn3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">knn_umap4</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">knn4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">knn_umap3</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">knn_umap4</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Precomuted knn; different knn n_neighbors&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Precomuted knn; different random_seed&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Are the embeddings for knn_umap and knn_umap3 the same?</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">knn_umap</span><span class="o">.</span><span class="n">embedding_</span> <span class="o">==</span> <span class="n">knn_umap3</span><span class="o">.</span><span class="n">embedding_</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Are the embeddings for knn_umap and knn_umap4 the same?</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">knn_umap</span><span class="o">.</span><span class="n">embedding_</span> <span class="o">==</span> <span class="n">knn_umap4</span><span class="o">.</span><span class="n">embedding_</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<img alt="_images/precomputed_k-nn13.png" src="_images/precomputed_k-nn13.png" />
+<pre class="literal-block"><strong>Are the embeddings for knn_umap and knn_umap3 the same?</strong>
+False
+<strong>Are the embeddings for knn_umap and knn_umap4 the same?</strong>
+False</pre>
+<p>Without those three parameters being equal between runs, we have
+obtained different results.</p>
+</section>
+<section id="reproducing-normal-umap-with-precomputed-knn">
+<h3>Reproducing normal UMAP with precomputed_knn<a class="headerlink" href="#reproducing-normal-umap-with-precomputed-knn" title="Permalink to this heading"></a></h3>
+<p>With some extra considerations, we can also reproduce
+precomputed_knn results with normal UMAP and vice-versa. As in
+the previous case, we must keep in mind that the k-nn graphs have to be
+same. Additionaly, we also must consider how UMAP uses the <em>random_seed</em>
+that we provide it.</p>
+<p>If you provide UMAP a <em>random_seed</em>, it converts it into an
+<em>np.random.RandomState</em> (RNG). This RNG is then used to fix the state
+for all the relevant steps in the algorithm. The important thing to
+note, is that the RNG is mutated everytime it’s used. So, if we want to
+reproduce results with precomputed_knn we’ll have to mimic how UMAP
+manipulates the RNG when calling the <em>fit()</em> function.</p>
+<p>For more information on random states and their behavior, please refer to
+<a class="reference external" href="https://scikit-learn.org/dev/common_pitfalls.html#randomness">[1]</a>.</p>
+<p>We’ll look at one example of how this can be accomplished. Other cases
+can be easily infered from this. Using the same random blobs as before,
+we seek to run UMAP normally and then reproduce the results with a
+precomputed_knn. To accomplish this, we have to create a new k-nn graph
+using the <em>nearest_neighbors()</em> function in the same way that
+<em>fit()</em> would.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
+
+<span class="c1"># First we run the normal UMAP to compare with</span>
+<span class="n">random_seed3</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">normal_umap</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed3</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Now we run precomputed_knn UMAP</span>
+<span class="n">random_state3</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_seed3</span><span class="p">)</span>
+<span class="c1"># random_state3 = numpy.random.RandomState(random_seed3)</span>
+<span class="n">knn5</span> <span class="o">=</span> <span class="n">nearest_neighbors</span><span class="p">(</span>
+                        <span class="n">X</span><span class="p">,</span>
+                        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                        <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span>
+                        <span class="n">metric_kwds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">angular</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state3</span><span class="p">,</span>
+                        <span class="p">)</span>
+<span class="c1"># This mutated RNG can now be fed into precompute_knn UMAP to obtain</span>
+<span class="c1"># the same results as in normal UMAP</span>
+<span class="n">knn_umap5</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                      <span class="n">precomputed_knn</span><span class="o">=</span><span class="n">knn5</span><span class="p">,</span>
+                      <span class="n">random_state</span><span class="o">=</span><span class="n">random_state3</span><span class="p">,</span>  <span class="c1"># &lt;--- This is a RNG</span>
+                     <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that in this case we create a numpy.random.mtrand.RandomState
+instance with <em>check_random_state()</em> because we want to ensure that
+our RNG is created and mutated in exactly the same way that UMAP
+normally does. Equivalently, we could call <em>numpy.random.RandomState()</em>
+directly.</p>
+<p>Graphing and comparing the embeddings, we see that we were able to
+obtain the same results.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">normal_umap</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">knn_umap5</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">synthetic_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">theme</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Normal UMAP&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Precomuted knn UMAP&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span><span class="o">+</span><span class="s2">&quot;Are the embeddings for normal_umap and knn_umap5 the same?</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">normal_umap</span><span class="o">.</span><span class="n">embedding_</span> <span class="o">==</span> <span class="n">knn_umap5</span><span class="o">.</span><span class="n">embedding_</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<img alt="_images/precomputed_k-nn17.png" src="_images/precomputed_k-nn17.png" />
+<pre class="literal-block"><strong>Are the embeddings for normal_umap and knn_umap5 the same?</strong>
+True</pre>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aligned_umap_politics_demo.html" class="btn btn-neutral float-left" title="AlignedUMAP for Time Varying Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="benchmarking.html" class="btn btn-neutral float-right" title="Performance Comparison of Dimension Reduction Implementations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

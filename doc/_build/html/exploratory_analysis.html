@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exploratory Analysis of Interesting Datasets &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scientific Papers" href="scientific_papers.html" />
+    <link rel="prev" title="Interactive Visualizations" href="interactive_viz.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exploratory Analysis of Interesting Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prime-factorizations-of-numbers">Prime factorizations of numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure-of-recent-philosophy">Structure of Recent Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#language-context-and-geometry-in-neural-networks">Language, Context, and Geometry in Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#activation-atlas">Activation Atlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-syllabus-galaxy">Open Syllabus Galaxy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exploratory Analysis of Interesting Datasets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/exploratory_analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exploratory-analysis-of-interesting-datasets">
+<h1>Exploratory Analysis of Interesting Datasets<a class="headerlink" href="#exploratory-analysis-of-interesting-datasets" title="Permalink to this heading"></a></h1>
+<p>UMAP is a useful tool for general exploratory analysis of data – it can provide
+a unique lens through which to view data that can highlight structures and
+properties hiding in data that are not as apparent when analysed with other techniques.
+Below is a selection of uses cases of UMAP being used for interesting explorations
+of intriguing datasets – everything from pure math and outputs of neural networks,
+to philosophy articles, and scientific texts.</p>
+<section id="prime-factorizations-of-numbers">
+<h2>Prime factorizations of numbers<a class="headerlink" href="#prime-factorizations-of-numbers" title="Permalink to this heading"></a></h2>
+<p>What would happen if we applied UMAP to the integers? First we would need a way
+to express an integer in a high dimensional space. That can be done by looking
+at the prime factorization of each number. Next you have to take enough numbers
+to actually generate an interesting visualization. John Williamson set about doing
+exactly this, and the results are fascinating. While they may not actually tell us
+anything new about number theory they do highlight interesting structures
+in prime factorizations, and demonstrate how UMAP can aid in interesting explorations
+of datasets that we might think we know well. It’s worth visiting the linked article
+below as Dr. Williamson provides a rich and detailed exploration of UMAP as
+applied to prime factorizations of integers.</p>
+<a class="reference internal image-reference" href="_images/umap_primes.png"><img alt="_images/umap_primes.png" src="_images/umap_primes.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://johnhw.github.io/umap_primes/index.md.html">UMAP on prime factorizations</a></p>
+<p>Thanks to John Williamson.</p>
+</section>
+<section id="structure-of-recent-philosophy">
+<h2>Structure of Recent Philosophy<a class="headerlink" href="#structure-of-recent-philosophy" title="Permalink to this heading"></a></h2>
+<p>Philosophy is an incredibly diverse subject, ranging from social and moral philosophy to
+logic and philosophy of math; from analysis of ancient Greek philosophy to modern business
+ethics. If we could get an overview of all the philosophy papers published in the last
+century what might it look like? Maximilian Noichl provides just such an exploration,
+looking at a large sampling of philosophy papers and comparing them according to their
+citations. The results are intriguing, and can be explored interactively in the
+viewer Maximilian built for it.</p>
+<a class="reference internal image-reference" href="_images/structure_recent_phil.png"><img alt="_images/structure_recent_phil.png" src="_images/structure_recent_phil.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://homepage.univie.ac.at/noichlm94/full/zoom_final/index.html">Structure of Recent Philosophy</a></p>
+<p>Thanks to Maximilian Noichl.</p>
+</section>
+<section id="language-context-and-geometry-in-neural-networks">
+<h2>Language, Context, and Geometry in Neural Networks<a class="headerlink" href="#language-context-and-geometry-in-neural-networks" title="Permalink to this heading"></a></h2>
+<p>Among recent developments in natural language processing is the BERT neural network
+based technique for analysis of language. Among many things that BERT can do one is
+context sensitive embeddings of words – providing numeric vector representations of words
+that are sensitive to the context of how the word is used. Exactly what goes on inside
+the neural network to do this is a little mysterious (since the network is very complex
+with many many parameters). A tram of researchers from Google set out to explore the
+word embedding space generated by BERT, and among the tools used was UMAP. The linked
+blog post provides a detailed and inspiring analysis of what BERT’s word embeddings
+look like, and how the different layers of BERT represent different aspects of language.</p>
+<a class="reference internal image-reference" href="_images/bert_embedding.png"><img alt="_images/bert_embedding.png" src="_images/bert_embedding.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://pair-code.github.io/interpretability/context-atlas/blogpost/">Language, Context, and Geometry in Neural Networks</a></p>
+<p>Thanks to Andy Coenen, Emily Reif, Ann Yuan, Been Kim, Adam Pearce, Fernanda Viégas, and Martin Wattenberg.</p>
+</section>
+<section id="activation-atlas">
+<h2>Activation Atlas<a class="headerlink" href="#activation-atlas" title="Permalink to this heading"></a></h2>
+<p>Understanding the image processing capabilities (and deficits!) of modern
+convolutional neural networks is a challenge. Certainly these models are capable
+of amazing feats in, for example, image classification. They can also be brittle
+in unexpected ways, with carefully designed images able to induce otherwise
+baffling mis-classifications. To better understand this researchers from
+Google and OpenAI built the activation atlas – analysing the space of activations
+of a neural network. Here UMAP provides a means to compress the activation landscape
+down to 2 dimensions for visualization. The result was an impressive interactive paper
+in the Distill journal, providing rich visualizations and new insights into
+the working of convolutional neural networks.</p>
+<a class="reference internal image-reference" href="_images/activation_atlas.png"><img alt="_images/activation_atlas.png" src="_images/activation_atlas.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://distill.pub/2019/activation-atlas/">The Activation Atlas</a></p>
+<p>Thanks to Shan Carter, Zan Armstrong, Ludwig Schubert, Ian Johnson, and Chris Olah.</p>
+</section>
+<section id="open-syllabus-galaxy">
+<h2>Open Syllabus Galaxy<a class="headerlink" href="#open-syllabus-galaxy" title="Permalink to this heading"></a></h2>
+<p>Suppose you wanted to explore the space of commonly assigned texts from Open Syllabus? That
+gives you over 150,000 texts to consider. Since the texts are open you can actually analyse
+the text content involved. With some NLP and neural network wizardry David McClure build
+a network of such texts and then used node2vec and UMAP to generate a map of them. The result
+is a galaxy of textbooks showing inter-relationships between subjects, similar and related texts,
+and generally just a an interesting ladscape of science to be explored. As with some
+of the other projects here David made a great interactive viewer allowing for rich exploration
+of the results.</p>
+<a class="reference internal image-reference" href="_images/syllabus_galaxy.png"><img alt="_images/syllabus_galaxy.png" src="_images/syllabus_galaxy.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://galaxy.opensyllabus.org/">Open Syllabus Galaxy</a></p>
+<p>Thanks to David McClure.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interactive_viz.html" class="btn btn-neutral float-left" title="Interactive Visualizations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scientific_papers.html" class="btn btn-neutral float-right" title="Scientific Papers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

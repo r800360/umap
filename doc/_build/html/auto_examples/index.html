@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery of Examples of UMAP usage &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Gallery of Examples of UMAP usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/auto_examples/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gallery-of-examples-of-umap-usage">
+<h1>Gallery of Examples of UMAP usage<a class="headerlink" href="#gallery-of-examples-of-umap-usage" title="Permalink to this heading"></a></h1>
+<p>A small gallery collection examples of UMAP usage. Do you
+have an interesting UMAP plot that uses publicly available
+data? Submit a pull request to have it added as an example!</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="A simple example demonstrating how to use UMAP on a larger dataset such as MNIST. We first pull..."><img alt="" src="../_images/sphx_glr_plot_mnist_example_thumb.png" />
+<p><a class="reference internal" href="plot_mnist_example.html#sphx-glr-auto-examples-plot-mnist-example-py"><span class="std std-ref">UMAP on the MNIST Digits dataset</span></a></p>
+  <div class="sphx-glr-thumbnail-title">UMAP on the MNIST Digits dataset</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A simple example demonstrating how to use UMAP on a larger dataset such as MNIST. We first pull..."><img alt="" src="../_images/sphx_glr_mnist_transform_new_data_thumb.png" />
+<p><a class="reference internal" href="mnist_transform_new_data.html#sphx-glr-auto-examples-mnist-transform-new-data-py"><span class="std std-ref">UMAP on the MNIST Digits dataset</span></a></p>
+  <div class="sphx-glr-thumbnail-title">UMAP on the MNIST Digits dataset</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The following script shows how UMAP can be used as a feature extraction technique to improve th..."><img alt="" src="../_images/sphx_glr_plot_feature_extraction_classification_thumb.png" />
+<p><a class="reference internal" href="plot_feature_extraction_classification.html#sphx-glr-auto-examples-plot-feature-extraction-classification-py"><span class="std std-ref">UMAP as a Feature Extraction Technique for Classification</span></a></p>
+  <div class="sphx-glr-thumbnail-title">UMAP as a Feature Extraction Technique for Classification</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This is a simple example of using UMAP on the Fashion-MNIST dataset. The goal of this example i..."><img alt="" src="../_images/sphx_glr_plot_fashion-mnist_example_thumb.png" />
+<p><a class="reference internal" href="plot_fashion-mnist_example.html#sphx-glr-auto-examples-plot-fashion-mnist-example-py"><span class="std std-ref">UMAP on the Fashion MNIST Digits dataset using Datashader</span></a></p>
+  <div class="sphx-glr-thumbnail-title">UMAP on the Fashion MNIST Digits dataset using Datashader</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="A comparison of several different dimension reduction techniques on a variety of toy datasets. ..."><img alt="" src="../_images/sphx_glr_plot_algorithm_comparison_thumb.png" />
+<p><a class="reference internal" href="plot_algorithm_comparison.html#sphx-glr-auto-examples-plot-algorithm-comparison-py"><span class="std std-ref">Comparison of Dimension Reduction Techniques</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Comparison of Dimension Reduction Techniques</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This is an example of using UMAP on the Galaxy10SDSS dataset. The goal of this example is large..."><img alt="" src="../_images/sphx_glr_galaxy10sdss_thumb.png" />
+<p><a class="reference internal" href="galaxy10sdss.html#sphx-glr-auto-examples-galaxy10sdss-py"><span class="std std-ref">UMAP on the Galaxy10SDSS dataset</span></a></p>
+  <div class="sphx-glr-thumbnail-title">UMAP on the Galaxy10SDSS dataset</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/07fcc19ba03226cd3d83d4e40ec44385/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/6f1e7a639e0699d6164445b55e6c116d/auto_examples_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

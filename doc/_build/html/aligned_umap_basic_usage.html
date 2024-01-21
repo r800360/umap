@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to use AlignedUMAP &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AlignedUMAP for Time Varying Data" href="aligned_umap_politics_demo.html" />
+    <link rel="prev" title="Embedding to non-Euclidean spaces" href="embedding_space.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to use AlignedUMAP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#online-updating-of-aligned-embeddings">Online updating of aligned embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aligning-varying-parameters">Aligning varying parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to use AlignedUMAP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aligned_umap_basic_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-use-alignedumap">
+<h1>How to use AlignedUMAP<a class="headerlink" href="#how-to-use-alignedumap" title="Permalink to this heading"></a></h1>
+<p>It may happen that it would be beneficial to have different UMAP
+embeddings aligned with each other. There are several ways to go about
+doing this. One simple approach is to simply embed each dataset with
+UMAP independently and then solve for a <a class="reference external" href="https://en.wikipedia.org/wiki/Procrustes_transformation">Procrustes
+transformation</a>
+on shared points. An alternative approach is to embed the first dataset
+and then construct an initial embedding for the second dataset based on
+locations of shared points in the first embedding and then go from
+there. A third approach, which will provide better alignments in
+general, is to optimize both embeddings at the same time with some form
+of constraint as to how far shared points can take different locations
+in different embeddings <em>during</em> the optimization. This last option is
+possible, but is not easily tractable to implement yourself (unlike the
+first two options). To remedy this issue it has been implemented as a
+separate model class in <code class="docutils literal notranslate"><span class="pre">umap-learn</span></code> called <code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code>. The
+resulting class is quite flexible, but here we will walk through simple
+usage on some basic (and somewhat contrived) data just to demonstrate
+how to get it running on data.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+<span class="kn">import</span> <span class="nn">umap</span>
+<span class="kn">import</span> <span class="nn">umap.plot</span>
+<span class="kn">import</span> <span class="nn">umap.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">import</span> <span class="nn">umap.aligned_umap</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+<p>For our demonstration we’ll just use the pendigits dataset from sklearn.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">digits</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To make a sequence of datasets with some shared points between each
+different dataset we’ll first sort the data so we have some vaguely
+sensible progression. In this case we’ll sort by the total amount of
+“ink” in the handwritten digit. This isn’t meant to be meaningful, it is
+merely meant to provide something useful to slicing into overlapping
+chunks that we will want to embed separately and yet keep aligned.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ordered_digits</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))]</span>
+<span class="n">ordered_target</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">ordered_digits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">)))</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_basic_usage_5_1.png" src="_images/aligned_umap_basic_usage_5_1.png" />
+<p>We can then divide up the dataset into slices of 400 samples, moving
+along in chunks of 150 to ensure that there are overlaps between
+consecutive slices. This will give us a list of ten different datasets
+that we can embed, with the goal being to ensure that the positions of
+points in the embeddings are relatively consistent.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">ordered_digits</span><span class="p">[</span><span class="mi">150</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">ordered_digits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">400</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>To ensure that consistency <code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code> will need more information
+than <em>just</em> the datasets – we also need some information about how the
+datasets relate to one another. These take the form of dictionaries that
+relate the indices of one dataset to the indices of another. Currently
+<code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code> only supports sequences of datasets with relations
+between each consecutive pair in the sequence. To construct the
+relations for this dataset we note that the last 250 samples of one
+dataset are going to be the same samples as the first 250 samples of the
+next dataset – this makes it easy to construct the dictionary: it is
+mapping</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">150</span> <span class="o">--&gt;</span> <span class="mi">0</span>
+<span class="mi">151</span> <span class="o">--&gt;</span> <span class="mi">1</span>
+<span class="o">...</span>
+<span class="mi">398</span> <span class="o">--&gt;</span> <span class="mi">248</span>
+<span class="mi">399</span> <span class="o">--&gt;</span> <span class="mi">249</span>
+</pre></div>
+</div>
+<p>which we can construct easily using a dictionary comprehension. We will
+have the same relation between each consecutive pair, so to make the
+list of relations between pairs we can just duplicate the constructed
+relation the requisite number of times.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">relation_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">+</span><span class="mi">150</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">400</span><span class="o">-</span><span class="mi">150</span><span class="p">)}</span>
+<span class="n">relation_dicts</span> <span class="o">=</span> <span class="p">[</span><span class="n">relation_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Note that while in this case the relation defines a map between
+identical samples in different datasets it can be much more general –
+see the politics example later for a case where the relation is
+constructed from external information (representatives names and
+states).</p>
+<p>Now that we have both a list of data slices and a list of relations
+between the consecutive pairs we can use the <code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code> class to
+generate a list of embeddings. The <code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code> class takes most of
+the parameters that UMAP accepts. The major difference is that the fit
+method requires a <em>list</em> of datasets, and a keyword argument
+<code class="docutils literal notranslate"><span class="pre">relations</span></code> that specifies the relation dictionaries between
+consecutive pairs of datasets. Other than that things are essentially
+push-button.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">aligned_mapper</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">AlignedUMAP</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">relations</span><span class="o">=</span><span class="n">relation_dicts</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">57.4</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">8.43</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">1</span><span class="nb">min</span> <span class="mi">5</span><span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">57.4</span> <span class="n">s</span>
+</pre></div>
+</div>
+<p>You will note that this took a non-trivial amount of time to run,
+despite being on the relatively small pendigits dataset. This is because
+we are completing 10 different UMAP embeddings at once, so on average we
+are taking about five seconds per embedding, which is more reasonable –
+the alignment does have overhead cost however.</p>
+<p>The next step is to look at the results. To ensure that the plots we
+produce have a consistent x and y axis we’ll use a small function to
+compute a set of axis bounds for plotting.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">axis_bounds</span><span class="p">(</span><span class="n">embedding</span><span class="p">):</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">bottom</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">adj_h</span><span class="p">,</span> <span class="n">adj_v</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">left</span> <span class="o">-</span> <span class="n">adj_h</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="n">adj_h</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">-</span> <span class="n">adj_v</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="n">adj_v</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now it is just a matter of plotting the results in ten different scatter
+plots. We can do this most easily with matplotlib directly, setting up a
+grid of plots. Note that the progression proceeds by row then column, so
+read the progression as if you were reading a page of text (across, then
+down).</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">ax_bound</span> <span class="o">=</span> <span class="n">axis_bounds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">aligned_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">current_target</span> <span class="o">=</span> <span class="n">ordered_target</span><span class="p">[</span><span class="mi">150</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">ordered_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">400</span><span class="p">)]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">aligned_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">current_target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Spectral&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">ax_bound</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_basic_usage_15_0.png" src="_images/aligned_umap_basic_usage_15_0.png" />
+<p>So despite being different embeddings on different datasets, the
+clusters keep their general alignment – the top left plot and bottom
+right plot have the same rough positions for specific digit clusters. We
+can also, to a degree, see how the structure changes over the course of
+the different slices. Thus we are keeping the various embeddings
+aligned, but allowing the changes dictated by the differing structures
+of each different slice of data.</p>
+<section id="online-updating-of-aligned-embeddings">
+<h2>Online updating of aligned embeddings<a class="headerlink" href="#online-updating-of-aligned-embeddings" title="Permalink to this heading"></a></h2>
+<p>It may be the case that we have incoming temporal data and would like to
+have embeddings of time-windows that, ideally, align with the embeddings
+of prior time-windows. As long as we overlap the time-windows we use to
+allow for relations between time windows then this is possible – except
+that the previous code required all the time-windows to be input <em>at
+once</em> for fitting. We would instead like to train an initial model and
+then update it as we go. This is possible via the <code class="docutils literal notranslate"><span class="pre">update</span></code> method
+which we’ll demonstrate below.</p>
+<p>First we need to fit a base <code class="docutils literal notranslate"><span class="pre">AlignedUMAP</span></code> model; we’ll use the first
+two slices and the first relation dict to do so.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">updating_mapper</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">AlignedUMAP</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">slices</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">relations</span><span class="o">=</span><span class="n">relation_dicts</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">9.32</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.47</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">10.8</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">9.17</span> <span class="n">s</span>
+</pre></div>
+</div>
+<p>Note that this is fairly quick, since we are only fitting two slices.
+Given the trained model the update method requires a new slice of data
+to add, along with a relation dictionary (passed in with the
+<code class="docutils literal notranslate"><span class="pre">relations</span></code> keyword argument as with <code class="docutils literal notranslate"><span class="pre">fit</span></code>). This will append a new
+embedding to the <code class="docutils literal notranslate"><span class="pre">embeddings_</span></code> attribute of the model for the new
+data, aligned with what has been seen so far.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">slices</span><span class="p">)):</span>
+    <span class="o">%</span><span class="n">time</span> <span class="n">updating_mapper</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">slices</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">relations</span><span class="o">=</span><span class="p">{</span><span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">relation_dicts</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">7.78</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.15</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">8.93</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">7.92</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">6.64</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.17</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">7.81</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">6.6</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">6.94</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.17</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">8.11</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">6.81</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">6.45</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.51</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">7.96</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">6.45</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">7.44</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.32</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">8.76</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">7.16</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">7.68</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.73</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">9.41</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">7.59</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">7.88</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.65</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">9.54</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">7.39</span> <span class="n">s</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mf">7.82</span> <span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.98</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mf">9.8</span> <span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mf">7.7</span> <span class="n">s</span>
+</pre></div>
+</div>
+<p>Note that each new slice takes a relatively short period of time, as we
+might hope. The downside of this, as you can imagine, is that we have no
+“forward” relations – the windows over slices only look backward. This
+means the results are less good, but we are trading that for the ability
+to quickly and easily update as we go.</p>
+<p>We can look at how we did using essentially the same code as before.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">ax_bound</span> <span class="o">=</span> <span class="n">axis_bounds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">updating_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">current_target</span> <span class="o">=</span> <span class="n">ordered_target</span><span class="p">[</span><span class="mi">150</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">ordered_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">150</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">400</span><span class="p">)]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">updating_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">current_target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Spectral&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">ax_bound</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_basic_usage_22_0.png" src="_images/aligned_umap_basic_usage_22_0.png" />
+<p>We see that the alignment is indeed working, so new slices remain
+comparable with previously trained slices. As noted the overall
+alignments and progression is not as nice as the previous version, but
+it does have the significant benefit of allowing an update as you go
+approach.</p>
+<p>Note that right now this model keeps all the previous data, so it will
+only really work in a batch streaming approach where occasionally a
+fresh model is trained, dropping some of the historical data before
+continuing with updates.</p>
+</section>
+<section id="aligning-varying-parameters">
+<h2>Aligning varying parameters<a class="headerlink" href="#aligning-varying-parameters" title="Permalink to this heading"></a></h2>
+<p>It is possible to align UMAP embedding that vary in the parameters used
+instead of the data. To demonstrate how this can work we’ll continue to
+use the pendigits dataset, but instead of slicing the data as we did
+before, we’ll use the full dataset. That means that our relations
+between datasets are simply constant relations. We can construct those
+ahead of time:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">constant_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])}</span>
+<span class="n">constant_relations</span> <span class="o">=</span> <span class="p">[</span><span class="n">constant_dict</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>To run AlignedUMAP over a range of parameters you simply need to pass in
+a <em>list</em> of the sequence of parameters you wish to use. You can do this
+for several different parameters – just ensure that all the lists are
+the same length! In this case we’ll try looking at how the embeddings
+change if we change <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> and <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>. This means that
+when we create the AlignedUMAP object we pass a list, instead of a
+single value, to each of those parameters. To make the visualization a
+little more interesting we’ll also vary some of the alignment parameters
+(there are only two of major consequence). Specifically we’ll adjust the
+<code class="docutils literal notranslate"><span class="pre">alignment_window_size</span></code>, which controls how far forward and backward
+across the datasets we look when doing alignment, and the
+<code class="docutils literal notranslate"><span class="pre">alignment_regularisation</span></code> which controls how heavily we weight the
+alignment aspect versus the UMAP layout. Larger values of
+<code class="docutils literal notranslate"><span class="pre">alignment_regularisation</span></code> will work harder to keep points aligned
+across embeddings (at the cost of the embedding quality at each slice),
+while smaller values will allow the optimisation to focus more on the
+individual embeddings and put less emphasis on aligning the embeddings
+with each other.</p>
+<p>Given a model we can then fit it. As before we need to hand it a list of
+datasets, and a list of relations. Since we are using the same data each
+time (and varying the parameters) we can just repeat the full pendigits
+dataset. Note that the number of datasets needs to match the number of
+parameter values being used. The same goes for the number of relations
+(one less than the number of parameter values).</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">neighbors_mapper</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">AlignedUMAP</span><span class="p">(</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">54</span><span class="p">],</span>
+    <span class="n">min_dist</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.45</span><span class="p">],</span>
+    <span class="n">alignment_window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">alignment_regularisation</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)],</span> <span class="n">relations</span><span class="o">=</span><span class="n">constant_relations</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>As before we can look at the results by plotting each of the embeddings.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">ax_bound</span> <span class="o">=</span> <span class="n">axis_bounds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">neighbors_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">neighbors_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Spectral&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">ax_bound</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_basic_usage_29_1.png" src="_images/aligned_umap_basic_usage_29_1.png" />
+<p>To get a better feel for the evolution of the embedding over the change
+in parameter values we can plot the data in three dimensions, with the
+third dimension being the parameter value chosen. To better show how
+data points in the embedding <em>move</em> with respect to the changing
+parameters we can plot them not as points, but as <em>curves</em> connecting
+the same point in each sequential embedding. For three dimensional plots
+like this we’ll make use of the <a class="reference external" href="https://plotly.com">plotly</a> plotting
+library.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+<p>The first thing we’ll have to do is wrangle the data into a suitable
+format for plotly. That’s the reason we loaded up pandas as well –
+plotly likes dataframes. This involves stacking all the embeddings
+together, and then assigning an extra <code class="docutils literal notranslate"><span class="pre">z</span></code> value according to which
+embedding we are in. For the purposes of visualization we’ll just have a
+linear scale from 0 to 1 of the appropriate length for the z
+coordinates.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_embeddings</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors_mapper</span><span class="o">.</span><span class="n">embeddings_</span><span class="p">)</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">neighbors_mapper</span><span class="o">.</span><span class="n">embeddings_</span>
+<span class="n">embedding_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">es</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">))</span>
+<span class="n">embedding_df</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n_embeddings</span><span class="p">),</span> <span class="n">es</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">embedding_df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">es</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">n_embeddings</span><span class="p">)</span>
+<span class="n">embedding_df</span><span class="p">[</span><span class="s1">&#39;digit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">n_embeddings</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The next thing we can do to improve the visualization is to smooth out
+the curves rather than leaving them as piecewise linear lines. To to
+this we can use the <code class="docutils literal notranslate"><span class="pre">scipy.interpolate</span></code> functionality to create smooth
+cubic splines that pass through all the points of the curve we wish to
+create.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+</pre></div>
+</div>
+<p>The interpolate module has a function <code class="docutils literal notranslate"><span class="pre">interp1d</span></code> that generates a
+(vector of) smooth function given a one dimensional set of datapoints
+that it needs to pass through. We can generate separate functions for
+the x and y coordinates for each pendigit sample, allowing us to
+generate smooth curves in three dimensions.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fx</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
+    <span class="n">embedding_df</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">embedding_df</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">embedding_df</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_embeddings</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span>
+<span class="p">)</span>
+<span class="n">fy</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
+    <span class="n">embedding_df</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">embedding_df</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span> <span class="n">embedding_df</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_embeddings</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span>
+<span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With that in hand it is just a matter of plotting all the curves. In
+plotly parlance each curve is a “trace” and we generate each one
+separately (along with a suitable colour given by the digit the sample
+represents). We then add all the traces to a figure, and display the
+figure.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">palette</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">diverging</span><span class="o">.</span><span class="n">Spectral</span>
+<span class="n">interpolated_traces</span> <span class="o">=</span> <span class="p">[</span><span class="n">fx</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">fy</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+<span class="n">traces</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">interpolated_traces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">interpolated_traces</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="o">*</span><span class="mf">3.0</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+            <span class="n">width</span><span class="o">=</span><span class="mf">3.0</span>
+        <span class="p">),</span>
+        <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">traces</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_pendigits_3d_1.png" src="_images/aligned_umap_pendigits_3d_1.png" />
+<p>Since it is tricky to get the interactive plotly figure embedded in
+documentation we have a static image here, but if you run this yourself
+you will have a fully interactive view of the data.</p>
+<p>Alternatively, we can visualize the third dimension as an evolution of the
+embeddings through time by rendering each z-slice as a frame in an animated
+GIF. To do this, we’ll first need to import some notebook display tools and
+matplotlib’s <a class="reference external" href="https://matplotlib.org/stable/api/animation_api.html">animation</a>
+module.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">animation</span>
+</pre></div>
+</div>
+<p>Next, we’ll create a new figure, initialize a blank scatter plot, then use
+<code class="docutils literal notranslate"><span class="pre">FuncAnimation</span></code> to update the point positions (called “offsets”) one frame at
+a time.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">scat</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">scat</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="n">scat</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="s1">&#39;Spectral&#39;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">ax_bound</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ax_bound</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">ax_bound</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolated_traces</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">num_frames</span> <span class="o">=</span> <span class="n">offsets</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="n">scat</span><span class="o">.</span><span class="n">set_offsets</span><span class="p">(</span><span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scat</span>
+
+<span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span>
+    <span class="n">fig</span><span class="p">,</span>
+    <span class="n">init_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">func</span><span class="o">=</span><span class="n">animate</span><span class="p">,</span>
+    <span class="n">frames</span><span class="o">=</span><span class="n">num_frames</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then we can save the animation as a GIF and close our animation. Depending on
+your machine, you may need to change which writer the save method uses.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;aligned_umap_pendigits_anim.gif&quot;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="s2">&quot;pillow&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">anim</span><span class="o">.</span><span class="n">_fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we can read in our rendered GIF and display it in the notebook.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;aligned_umap_pendigits_anim.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_pendigits_anim.gif" src="_images/aligned_umap_pendigits_anim.gif" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="embedding_space.html" class="btn btn-neutral float-left" title="Embedding to non-Euclidean spaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aligned_umap_politics_demo.html" class="btn btn-neutral float-right" title="AlignedUMAP for Time Varying Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

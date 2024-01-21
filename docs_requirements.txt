@@ -4,3 +4,17 @@ matplotlib
 pillow
 sphinx_rtd_theme
 numpydoc
+jupyter-server==1.21
+jupyter-client==7.4.4
+glue-vispy-viewers==1.0.0
+pyqt5==5.12
+pyqtwebengine==5.12
+astroid==2.6.6
+nbclassic==0.2.6
+jupyterlab==3.0.14
+jupyter-server==2.12.1
+glue-core==1.0.1
+scikit-learn>=1.0
+scipy>=1.9
+typing-extensions<4.6.0,>=3.6.6
+sphinx_rtd_theme

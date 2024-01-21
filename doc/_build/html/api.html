@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UMAP API Guide &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Scientific Papers" href="scientific_papers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">UMAP API Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#umap">UMAP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.UMAP"><code class="docutils literal notranslate"><span class="pre">UMAP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-umap.umap_">Useful Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.compute_membership_strengths"><code class="docutils literal notranslate"><span class="pre">compute_membership_strengths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.discrete_metric_simplicial_set_intersection"><code class="docutils literal notranslate"><span class="pre">discrete_metric_simplicial_set_intersection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.fast_intersection"><code class="docutils literal notranslate"><span class="pre">fast_intersection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.fast_metric_intersection"><code class="docutils literal notranslate"><span class="pre">fast_metric_intersection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.find_ab_params"><code class="docutils literal notranslate"><span class="pre">find_ab_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.fuzzy_simplicial_set"><code class="docutils literal notranslate"><span class="pre">fuzzy_simplicial_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.init_graph_transform"><code class="docutils literal notranslate"><span class="pre">init_graph_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.init_transform"><code class="docutils literal notranslate"><span class="pre">init_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.make_epochs_per_sample"><code class="docutils literal notranslate"><span class="pre">make_epochs_per_sample()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.nearest_neighbors"><code class="docutils literal notranslate"><span class="pre">nearest_neighbors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.raise_disconnected_warning"><code class="docutils literal notranslate"><span class="pre">raise_disconnected_warning()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.reset_local_connectivity"><code class="docutils literal notranslate"><span class="pre">reset_local_connectivity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.simplicial_set_embedding"><code class="docutils literal notranslate"><span class="pre">simplicial_set_embedding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#umap.umap_.smooth_knn_dist"><code class="docutils literal notranslate"><span class="pre">smooth_knn_dist()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">UMAP API Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="umap-api-guide">
+<h1>UMAP API Guide<a class="headerlink" href="#umap-api-guide" title="Permalink to this heading"></a></h1>
+<p>UMAP has only a single class <code class="xref py py-class docutils literal notranslate"><span class="pre">UMAP</span></code>.</p>
+<section id="umap">
+<h2>UMAP<a class="headerlink" href="#umap" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="umap.umap_.UMAP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">UMAP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spectral'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spread</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_op_mix_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repulsion_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_queue_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_rp_forest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'categorical'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_metric_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'embedding'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_approximation_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tqdm_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">densmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dens_lambda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dens_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dens_var_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disconnection_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precomputed_knn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(None,</span> <span class="pre">None,</span> <span class="pre">None)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#UMAP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.UMAP" title="Permalink to this definition"></a></dt>
+<dd><p>Uniform Manifold Approximation and Projection</p>
+<p>Finds a low dimensional embedding of the data that approximates
+an underlying manifold.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>n_neighbors: float (optional, default 15)</strong></dt><dd><p>The size of local neighborhood (in terms of number of neighboring
+sample points) used for manifold approximation. Larger values
+result in more global views of the manifold, while smaller
+values result in more local data being preserved. In general
+values should be in the range 2 to 100.</p>
+</dd>
+<dt><strong>n_components: int (optional, default 2)</strong></dt><dd><p>The dimension of the space to embed into. This defaults to 2 to
+provide easy visualization, but can reasonably be set to any
+integer value in the range 2 to 100.</p>
+</dd>
+<dt><strong>metric: string or function (optional, default ‘euclidean’)</strong></dt><dd><p>The metric to use to compute distances in high dimensional space.
+If a string is passed it must match a valid predefined metric. If
+a general metric is required a function that takes two 1d arrays and
+returns a float can be provided. For performance purposes it is
+required that this be a numba jit’d function. Valid string metrics
+include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>euclidean</p></li>
+<li><p>manhattan</p></li>
+<li><p>chebyshev</p></li>
+<li><p>minkowski</p></li>
+<li><p>canberra</p></li>
+<li><p>braycurtis</p></li>
+<li><p>mahalanobis</p></li>
+<li><p>wminkowski</p></li>
+<li><p>seuclidean</p></li>
+<li><p>cosine</p></li>
+<li><p>correlation</p></li>
+<li><p>haversine</p></li>
+<li><p>hamming</p></li>
+<li><p>jaccard</p></li>
+<li><p>dice</p></li>
+<li><p>russelrao</p></li>
+<li><p>kulsinski</p></li>
+<li><p>ll_dirichlet</p></li>
+<li><p>hellinger</p></li>
+<li><p>rogerstanimoto</p></li>
+<li><p>sokalmichener</p></li>
+<li><p>sokalsneath</p></li>
+<li><p>yule</p></li>
+</ul>
+</div></blockquote>
+<p>Metrics that take arguments (such as minkowski, mahalanobis etc.)
+can have arguments passed via the metric_kwds dictionary. At this
+time care must be taken and dictionary elements must be ordered
+appropriately; this will hopefully be fixed in the future.</p>
+</dd>
+<dt><strong>n_epochs: int (optional, default None)</strong></dt><dd><p>The number of training epochs to be used in optimizing the
+low dimensional embedding. Larger values result in more accurate
+embeddings. If None is specified a value will be selected based on
+the size of the input dataset (200 for large datasets, 500 for small).</p>
+</dd>
+<dt><strong>learning_rate: float (optional, default 1.0)</strong></dt><dd><p>The initial learning rate for the embedding optimization.</p>
+</dd>
+<dt><strong>init: string (optional, default ‘spectral’)</strong></dt><dd><dl class="simple">
+<dt>How to initialize the low dimensional embedding. Options are:</dt><dd><ul class="simple">
+<li><p>‘spectral’: use a spectral embedding of the fuzzy 1-skeleton</p></li>
+<li><p>‘random’: assign initial embedding positions at random.</p></li>
+<li><p>A numpy array of initial embedding positions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>min_dist: float (optional, default 0.1)</strong></dt><dd><p>The effective minimum distance between embedded points. Smaller values
+will result in a more clustered/clumped embedding where nearby points
+on the manifold are drawn closer together, while larger values will
+result on a more even dispersal of points. The value should be set
+relative to the <code class="docutils literal notranslate"><span class="pre">spread</span></code> value, which determines the scale at which
+embedded points will be spread out.</p>
+</dd>
+<dt><strong>spread: float (optional, default 1.0)</strong></dt><dd><p>The effective scale of embedded points. In combination with <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>
+this determines how clustered/clumped the embedded points are.</p>
+</dd>
+<dt><strong>low_memory: bool (optional, default True)</strong></dt><dd><p>For some datasets the nearest neighbor computation can consume a lot of
+memory. If you find that UMAP is failing due to memory constraints
+consider setting this option to True. This approach is more
+computationally expensive, but avoids excessive memory use.</p>
+</dd>
+<dt><strong>set_op_mix_ratio: float (optional, default 1.0)</strong></dt><dd><p>Interpolate between (fuzzy) union and intersection as the set operation
+used to combine local fuzzy simplicial sets to obtain a global fuzzy
+simplicial sets. Both fuzzy set operations use the product t-norm.
+The value of this parameter should be between 0.0 and 1.0; a value of
+1.0 will use a pure fuzzy union, while 0.0 will use a pure fuzzy
+intersection.</p>
+</dd>
+<dt><strong>local_connectivity: int (optional, default 1)</strong></dt><dd><p>The local connectivity required – i.e. the number of nearest
+neighbors that should be assumed to be connected at a local level.
+The higher this value the more connected the manifold becomes
+locally. In practice this should be not more than the local intrinsic
+dimension of the manifold.</p>
+</dd>
+<dt><strong>repulsion_strength: float (optional, default 1.0)</strong></dt><dd><p>Weighting applied to negative samples in low dimensional embedding
+optimization. Values higher than one will result in greater weight
+being given to negative samples.</p>
+</dd>
+<dt><strong>negative_sample_rate: int (optional, default 5)</strong></dt><dd><p>The number of negative samples to select per positive sample
+in the optimization process. Increasing this value will result
+in greater repulsive force being applied, greater optimization
+cost, but slightly more accuracy.</p>
+</dd>
+<dt><strong>transform_queue_size: float (optional, default 4.0)</strong></dt><dd><p>For transform operations (embedding new points using a trained <a href="#id1"><span class="problematic" id="id2">model_</span></a>
+this will control how aggressively to search for nearest neighbors.
+Larger values will result in slower performance but more accurate
+nearest neighbor evaluation.</p>
+</dd>
+<dt><strong>a: float (optional, default None)</strong></dt><dd><p>More specific parameters controlling the embedding. If None these
+values are set automatically as determined by <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> and
+<code class="docutils literal notranslate"><span class="pre">spread</span></code>.</p>
+</dd>
+<dt><strong>b: float (optional, default None)</strong></dt><dd><p>More specific parameters controlling the embedding. If None these
+values are set automatically as determined by <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> and
+<code class="docutils literal notranslate"><span class="pre">spread</span></code>.</p>
+</dd>
+<dt><strong>random_state: int, RandomState instance or None, optional (default: None)</strong></dt><dd><p>If int, random_state is the seed used by the random number generator;
+If RandomState instance, random_state is the random number generator;
+If None, the random number generator is the RandomState instance used
+by <cite>np.random</cite>.</p>
+</dd>
+<dt><strong>metric_kwds: dict (optional, default None)</strong></dt><dd><p>Arguments to pass on to the metric, such as the <code class="docutils literal notranslate"><span class="pre">p</span></code> value for
+Minkowski distance. If None then no arguments are passed on.</p>
+</dd>
+<dt><strong>angular_rp_forest: bool (optional, default False)</strong></dt><dd><p>Whether to use an angular random projection forest to initialise
+the approximate nearest neighbor search. This can be faster, but is
+mostly on useful for metric that use an angular style distance such
+as cosine, correlation etc. In the case of those metrics angular forests
+will be chosen automatically.</p>
+</dd>
+<dt><strong>target_n_neighbors: int (optional, default -1)</strong></dt><dd><p>The number of nearest neighbors to use to construct the target simplcial
+set. If set to -1 use the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> value.</p>
+</dd>
+<dt><strong>target_metric: string or callable (optional, default ‘categorical’)</strong></dt><dd><p>The metric used to measure distance for a target array is using supervised
+dimension reduction. By default this is ‘categorical’ which will measure
+distance in terms of whether categories match or are different. Furthermore,
+if semi-supervised is required target values of -1 will be trated as
+unlabelled under the ‘categorical’ metric. If the target array takes
+continuous values (e.g. for a regression problem) then metric of ‘l1’
+or ‘l2’ is probably more appropriate.</p>
+</dd>
+<dt><strong>target_metric_kwds: dict (optional, default None)</strong></dt><dd><p>Keyword argument to pass to the target metric when performing
+supervised dimension reduction. If None then no arguments are passed on.</p>
+</dd>
+<dt><strong>target_weight: float (optional, default 0.5)</strong></dt><dd><p>weighting factor between data topology and target topology. A value of
+0.0 weights predominantly on data, a value of 1.0 places a strong emphasis on
+target. The default of 0.5 balances the weighting equally between data and
+target.</p>
+</dd>
+<dt><strong>transform_seed: int (optional, default 42)</strong></dt><dd><p>Random seed used for the stochastic aspects of the transform operation.
+This ensures consistency in transform operations.</p>
+</dd>
+<dt><strong>verbose: bool (optional, default False)</strong></dt><dd><p>Controls verbosity of logging.</p>
+</dd>
+<dt><strong>tqdm_kwds: dict (optional, defaul None)</strong></dt><dd><p>Key word arguments to be used by the tqdm progress bar.</p>
+</dd>
+<dt><strong>unique: bool (optional, default False)</strong></dt><dd><p>Controls if the rows of your data should be uniqued before being
+embedded.  If you have more duplicates than you have n_neighbour
+you can have the identical data points lying in different regions of
+your space.  It also violates the definition of a metric.
+For to map from internal structures back to your data use the variable
+_unique_inverse_.</p>
+</dd>
+<dt><strong>densmap: bool (optional, default False)</strong></dt><dd><p>Specifies whether the density-augmented objective of densMAP
+should be used for optimization. Turning on this option generates
+an embedding where the local densities are encouraged to be correlated
+with those in the original space. Parameters below with the prefix ‘dens’
+further control the behavior of this extension.</p>
+</dd>
+<dt><strong>dens_lambda: float (optional, default 2.0)</strong></dt><dd><p>Controls the regularization weight of the density correlation term
+in densMAP. Higher values prioritize density preservation over the
+UMAP objective, and vice versa for values closer to zero. Setting this
+parameter to zero is equivalent to running the original UMAP algorithm.</p>
+</dd>
+<dt><strong>dens_frac: float (optional, default 0.3)</strong></dt><dd><p>Controls the fraction of epochs (between 0 and 1) where the
+density-augmented objective is used in densMAP. The first
+(1 - dens_frac) fraction of epochs optimize the original UMAP objective
+before introducing the density correlation term.</p>
+</dd>
+<dt><strong>dens_var_shift: float (optional, default 0.1)</strong></dt><dd><p>A small constant added to the variance of local radii in the
+embedding when calculating the density correlation objective to
+prevent numerical instability from dividing by a small number</p>
+</dd>
+<dt><strong>output_dens: float (optional, default False)</strong></dt><dd><p>Determines whether the local radii of the final embedding (an inverse
+measure of local density) are computed and returned in addition to
+the embedding. If set to True, local radii of the original data
+are also included in the output for comparison; the output is a tuple
+(embedding, original local radii, embedding local radii). This option
+can also be used when densmap=False to calculate the densities for
+UMAP embeddings.</p>
+</dd>
+<dt><strong>disconnection_distance: float (optional, default np.inf or maximal value for bounded distances)</strong></dt><dd><p>Disconnect any vertices of distance greater than or equal to disconnection_distance when approximating the
+manifold via our k-nn graph. This is particularly useful in the case that you have a bounded metric.  The
+UMAP assumption that we have a connected manifold can be problematic when you have points that are maximally
+different from all the rest of your data.  The connected manifold assumption will make such points have perfect
+similarity to a random set of other points.  Too many such points will artificially connect your space.</p>
+</dd>
+<dt><strong>precomputed_knn: tuple (optional, default (None,None,None))</strong></dt><dd><p>If the k-nearest neighbors of each point has already been calculated you
+can pass them in here to save computation time. The number of nearest
+neighbors in the precomputed_knn must be greater or equal to the
+n_neighbors parameter. This should be a tuple containing the output
+of the nearest_neighbors() function or attributes from a previously fit
+UMAP object; (knn_indices, knn_dists,knn_search_index).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="umap.umap_.UMAP.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#UMAP.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.UMAP.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fit X into an embedded space.</p>
+<p>Optionally use y for supervised dimension reduction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array, shape (n_samples, n_features) or (n_samples, n_samples)</span></dt><dd><p>If the metric is ‘precomputed’ X must be a square distance
+matrix. Otherwise it contains a sample per row. If the method
+is ‘exact’, X may be a sparse matrix of type ‘csr’, ‘csc’
+or ‘coo’.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array, shape (n_samples)</span></dt><dd><p>A target array for supervised dimension reduction. How this is
+handled is determined by parameters UMAP was instantiated with.
+The relevant attributes are <code class="docutils literal notranslate"><span class="pre">target_metric</span></code> and
+<code class="docutils literal notranslate"><span class="pre">target_metric_kwds</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="umap.umap_.UMAP.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#UMAP.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.UMAP.fit_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Fit X into an embedded space and return that transformed
+output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array, shape (n_samples, n_features) or (n_samples, n_samples)</span></dt><dd><p>If the metric is ‘precomputed’ X must be a square distance
+matrix. Otherwise it contains a sample per row.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array, shape (n_samples)</span></dt><dd><p>A target array for supervised dimension reduction. How this is
+handled is determined by parameters UMAP was instantiated with.
+The relevant attributes are <code class="docutils literal notranslate"><span class="pre">target_metric</span></code> and
+<code class="docutils literal notranslate"><span class="pre">target_metric_kwds</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_new</strong><span class="classifier">array, shape (n_samples, n_components)</span></dt><dd><p>Embedding of the training data in low-dimensional space.</p>
+</dd>
+<dt>or a tuple (X_new, r_orig, r_emb) if <code class="docutils literal notranslate"><span class="pre">output_dens</span></code> flag is set,</dt><dd></dd>
+<dt>which additionally includes:</dt><dd></dd>
+<dt>r_orig: array, shape (n_samples)</dt><dd><p>Local radii of data points in the original data space (log-transformed).</p>
+</dd>
+<dt>r_emb: array, shape (n_samples)</dt><dd><p>Local radii of data points in the embedding (log-transformed).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="umap.umap_.UMAP.inverse_transform">
+<span class="sig-name descname"><span class="pre">inverse_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#UMAP.inverse_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.UMAP.inverse_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Transform X in the existing embedded space back into the input
+data space and return that transformed output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array, shape (n_samples, n_components)</span></dt><dd><p>New points to be inverse transformed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_new</strong><span class="classifier">array, shape (n_samples, n_features)</span></dt><dd><p>Generated data points new data in data space.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="umap.umap_.UMAP.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#UMAP.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.UMAP.transform" title="Permalink to this definition"></a></dt>
+<dd><p>Transform X into the existing embedded space and return that
+transformed output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array, shape (n_samples, n_features)</span></dt><dd><p>New data to be transformed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_new</strong><span class="classifier">array, shape (n_samples, n_components)</span></dt><dd><p>Embedding of the new data in low-dimensional space.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>A number of internal functions can also be accessed separately for more fine tuned work.</p>
+</section>
+<section id="module-umap.umap_">
+<span id="useful-functions"></span><h2>Useful Functions<a class="headerlink" href="#module-umap.umap_" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.compute_membership_strengths">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">compute_membership_strengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">knn_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knn_dists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bipartite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#compute_membership_strengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.compute_membership_strengths" title="Permalink to this definition"></a></dt>
+<dd><p>Construct the membership strength data for the 1-skeleton of each local
+fuzzy simplicial set – this is formed as a sparse matrix where each row is
+a local fuzzy simplicial set, with a membership strength for the
+1-simplex to each other data point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>knn_indices: array of shape (n_samples, n_neighbors)</strong></dt><dd><p>The indices on the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> closest points in the dataset.</p>
+</dd>
+<dt><strong>knn_dists: array of shape (n_samples, n_neighbors)</strong></dt><dd><p>The distances to the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> closest points in the dataset.</p>
+</dd>
+<dt><strong>sigmas: array of shape(n_samples)</strong></dt><dd><p>The normalization factor derived from the metric tensor approximation.</p>
+</dd>
+<dt><strong>rhos: array of shape(n_samples)</strong></dt><dd><p>The local connectivity adjustment.</p>
+</dd>
+<dt><strong>return_dists: bool (optional, default False)</strong></dt><dd><p>Whether to return the pairwise distance associated with each edge</p>
+</dd>
+<dt><strong>bipartite: bool (optional, default False)</strong></dt><dd><p>Does the nearest neighbour set represent a bipartite graph?  That is are the
+nearest neighbour indices from the same point set as the row indices?</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>rows: array of shape (n_samples * n_neighbors)</dt><dd><p>Row data for the resulting sparse matrix (coo format)</p>
+</dd>
+<dt>cols: array of shape (n_samples * n_neighbors)</dt><dd><p>Column data for the resulting sparse matrix (coo format)</p>
+</dd>
+<dt>vals: array of shape (n_samples * n_neighbors)</dt><dd><p>Entries for the resulting sparse matrix (coo format)</p>
+</dd>
+<dt>dists: array of shape (n_samples * n_neighbors)</dt><dd><p>Distance associated with each entry in the resulting sparse matrix</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.discrete_metric_simplicial_set_intersection">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">discrete_metric_simplicial_set_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplicial_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unknown_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">far_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#discrete_metric_simplicial_set_intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.discrete_metric_simplicial_set_intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Combine a fuzzy simplicial set with another fuzzy simplicial set
+generated from discrete metric data using discrete distances. The target
+data is assumed to be categorical label data (a vector of labels),
+and this will update the fuzzy simplicial set to respect that label data.</p>
+<p>TODO: optional category cardinality based weighting of distance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>simplicial_set: sparse matrix</strong></dt><dd><p>The input fuzzy simplicial set.</p>
+</dd>
+<dt><strong>discrete_space: array of shape (n_samples)</strong></dt><dd><p>The categorical labels to use in the intersection.</p>
+</dd>
+<dt><strong>unknown_dist: float (optional, default 1.0)</strong></dt><dd><p>The distance an unknown label (-1) is assumed to be from any point.</p>
+</dd>
+<dt><strong>far_dist: float (optional, default 5.0)</strong></dt><dd><p>The distance between unmatched labels.</p>
+</dd>
+<dt><strong>metric: str (optional, default None)</strong></dt><dd><p>If not None, then use this metric to determine the
+distance between values.</p>
+</dd>
+<dt><strong>metric_scale: float (optional, default 1.0)</strong></dt><dd><p>If using a custom metric scale the distance values by
+this value – this controls the weighting of the
+intersection. Larger values weight more toward target.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>simplicial_set: sparse matrix</dt><dd><p>The resulting intersected fuzzy simplicial set.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.fast_intersection">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">fast_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unknown_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">far_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#fast_intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.fast_intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Under the assumption of categorical distance for the intersecting
+simplicial set perform a fast intersection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>rows: array</strong></dt><dd><p>An array of the row of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>cols: array</strong></dt><dd><p>An array of the column of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>values: array</strong></dt><dd><p>An array of the value of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>target: array of shape (n_samples)</strong></dt><dd><p>The categorical labels to use in the intersection.</p>
+</dd>
+<dt><strong>unknown_dist: float (optional, default 1.0)</strong></dt><dd><p>The distance an unknown label (-1) is assumed to be from any point.</p>
+</dd>
+<dt><strong>far_dist float (optional, default 5.0)</strong></dt><dd><p>The distance between unmatched labels.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.fast_metric_intersection">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">fast_metric_intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#fast_metric_intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.fast_metric_intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Under the assumption of categorical distance for the intersecting
+simplicial set perform a fast intersection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>rows: array</strong></dt><dd><p>An array of the row of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>cols: array</strong></dt><dd><p>An array of the column of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>values: array of shape</strong></dt><dd><p>An array of the values of each non-zero in the sparse matrix
+representation.</p>
+</dd>
+<dt><strong>discrete_space: array of shape (n_samples, n_features)</strong></dt><dd><p>The vectors of categorical labels to use in the intersection.</p>
+</dd>
+<dt><strong>metric: numba function</strong></dt><dd><p>The function used to calculate distance over the target array.</p>
+</dd>
+<dt><strong>scale: float</strong></dt><dd><p>A scaling to apply to the metric.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.find_ab_params">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">find_ab_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spread</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#find_ab_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.find_ab_params" title="Permalink to this definition"></a></dt>
+<dd><p>Fit a, b params for the differentiable curve used in lower
+dimensional fuzzy simplicial complex construction. We want the
+smooth curve (from a pre-defined family with simple gradient) that
+best matches an offset exponential decay.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.fuzzy_simplicial_set">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">fuzzy_simplicial_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_kwds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knn_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knn_dists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_op_mix_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_set_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#fuzzy_simplicial_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.fuzzy_simplicial_set" title="Permalink to this definition"></a></dt>
+<dd><p>Given a set of data X, a neighborhood size, and a measure of distance
+compute the fuzzy simplicial set (here represented as a fuzzy graph in
+the form of a sparse matrix) associated to the data. This is done by
+locally approximating geodesic distance at each point, creating a fuzzy
+simplicial set for each such point, and then combining all the local
+fuzzy simplicial sets into a global one via a fuzzy union.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>X: array of shape (n_samples, n_features)</strong></dt><dd><p>The data to be modelled as a fuzzy simplicial set.</p>
+</dd>
+<dt><strong>n_neighbors: int</strong></dt><dd><p>The number of neighbors to use to approximate geodesic distance.
+Larger numbers induce more global estimates of the manifold that can
+miss finer detail, while smaller values will focus on fine manifold
+structure to the detriment of the larger picture.</p>
+</dd>
+<dt><strong>random_state: numpy RandomState or equivalent</strong></dt><dd><p>A state capable being used as a numpy random state.</p>
+</dd>
+<dt><strong>metric: string or function (optional, default ‘euclidean’)</strong></dt><dd><p>The metric to use to compute distances in high dimensional space.
+If a string is passed it must match a valid predefined metric. If
+a general metric is required a function that takes two 1d arrays and
+returns a float can be provided. For performance purposes it is
+required that this be a numba jit’d function. Valid string metrics
+include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>euclidean (or l2)</p></li>
+<li><p>manhattan (or l1)</p></li>
+<li><p>cityblock</p></li>
+<li><p>braycurtis</p></li>
+<li><p>canberra</p></li>
+<li><p>chebyshev</p></li>
+<li><p>correlation</p></li>
+<li><p>cosine</p></li>
+<li><p>dice</p></li>
+<li><p>hamming</p></li>
+<li><p>jaccard</p></li>
+<li><p>kulsinski</p></li>
+<li><p>ll_dirichlet</p></li>
+<li><p>mahalanobis</p></li>
+<li><p>matching</p></li>
+<li><p>minkowski</p></li>
+<li><p>rogerstanimoto</p></li>
+<li><p>russellrao</p></li>
+<li><p>seuclidean</p></li>
+<li><p>sokalmichener</p></li>
+<li><p>sokalsneath</p></li>
+<li><p>sqeuclidean</p></li>
+<li><p>yule</p></li>
+<li><p>wminkowski</p></li>
+</ul>
+</div></blockquote>
+<p>Metrics that take arguments (such as minkowski, mahalanobis etc.)
+can have arguments passed via the metric_kwds dictionary. At this
+time care must be taken and dictionary elements must be ordered
+appropriately; this will hopefully be fixed in the future.</p>
+</dd>
+<dt><strong>metric_kwds: dict (optional, default {})</strong></dt><dd><p>Arguments to pass on to the metric, such as the <code class="docutils literal notranslate"><span class="pre">p</span></code> value for
+Minkowski distance.</p>
+</dd>
+<dt><strong>knn_indices: array of shape (n_samples, n_neighbors) (optional)</strong></dt><dd><p>If the k-nearest neighbors of each point has already been calculated
+you can pass them in here to save computation time. This should be
+an array with the indices of the k-nearest neighbors as a row for
+each data point.</p>
+</dd>
+<dt><strong>knn_dists: array of shape (n_samples, n_neighbors) (optional)</strong></dt><dd><p>If the k-nearest neighbors of each point has already been calculated
+you can pass them in here to save computation time. This should be
+an array with the distances of the k-nearest neighbors as a row for
+each data point.</p>
+</dd>
+<dt><strong>angular: bool (optional, default False)</strong></dt><dd><p>Whether to use angular/cosine distance for the random projection
+forest for seeding NN-descent to determine approximate nearest
+neighbors.</p>
+</dd>
+<dt><strong>set_op_mix_ratio: float (optional, default 1.0)</strong></dt><dd><p>Interpolate between (fuzzy) union and intersection as the set operation
+used to combine local fuzzy simplicial sets to obtain a global fuzzy
+simplicial sets. Both fuzzy set operations use the product t-norm.
+The value of this parameter should be between 0.0 and 1.0; a value of
+1.0 will use a pure fuzzy union, while 0.0 will use a pure fuzzy
+intersection.</p>
+</dd>
+<dt><strong>local_connectivity: int (optional, default 1)</strong></dt><dd><p>The local connectivity required – i.e. the number of nearest
+neighbors that should be assumed to be connected at a local level.
+The higher this value the more connected the manifold becomes
+locally. In practice this should be not more than the local intrinsic
+dimension of the manifold.</p>
+</dd>
+<dt><strong>verbose: bool (optional, default False)</strong></dt><dd><p>Whether to report information on the current progress of the algorithm.</p>
+</dd>
+<dt><strong>return_dists: bool or None (optional, default None)</strong></dt><dd><p>Whether to return the pairwise distance associated with each edge.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>fuzzy_simplicial_set: coo_matrix</dt><dd><p>A fuzzy simplicial set represented as a sparse matrix. The (i,
+j) entry of the matrix represents the membership strength of the
+1-simplex between the ith and jth sample points.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.init_graph_transform">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">init_graph_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#init_graph_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.init_graph_transform" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given a bipartite graph representing the 1-simplices and strengths between the</dt><dd><p>new points and the original data set along with an embedding of the original points</p>
+</dd>
+</dl>
+<p>initialize the positions of new points relative to the strengths (of their neighbors in the source data).</p>
+<p>If a point is in our original data set it embeds at the original points coordinates.
+If a point has no neighbours in our original dataset it embeds as the np.nan vector.
+Otherwise a point is the weighted average of it’s neighbours embedding locations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>graph: csr_matrix (n_new_samples, n_samples)</strong></dt><dd><p>A matrix indicating the the 1-simplices and their associated strengths.  These strengths should
+be values between zero and one and not normalized.  One indicating that the new point was identical
+to one of our original points.</p>
+</dd>
+<dt><strong>embedding: array of shape (n_samples, dim)</strong></dt><dd><p>The original embedding of the source data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>new_embedding: array of shape (n_new_samples, dim)</dt><dd><p>An initial embedding of the new sample points.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.init_transform">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">init_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#init_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.init_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Given indices and weights and an original embeddings
+initialize the positions of new points relative to the
+indices and weights (of their neighbors in the source data).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>indices: array of shape (n_new_samples, n_neighbors)</strong></dt><dd><p>The indices of the neighbors of each new sample</p>
+</dd>
+<dt><strong>weights: array of shape (n_new_samples, n_neighbors)</strong></dt><dd><p>The membership strengths of associated 1-simplices
+for each of the new samples.</p>
+</dd>
+<dt><strong>embedding: array of shape (n_samples, dim)</strong></dt><dd><p>The original embedding of the source data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>new_embedding: array of shape (n_new_samples, dim)</dt><dd><p>An initial embedding of the new sample points.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.make_epochs_per_sample">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">make_epochs_per_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#make_epochs_per_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.make_epochs_per_sample" title="Permalink to this definition"></a></dt>
+<dd><p>Given a set of weights and number of epochs generate the number of
+epochs per sample for each weight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>weights: array of shape (n_1_simplices)</strong></dt><dd><p>The weights ofhow much we wish to sample each 1-simplex.</p>
+</dd>
+<dt><strong>n_epochs: int</strong></dt><dd><p>The total number of epochs we want to train for.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>An array of number of epochs per sample, one for each 1-simplex.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.nearest_neighbors">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">nearest_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_kwds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pynndescent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#nearest_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.nearest_neighbors" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> nearest points for each data point in <code class="docutils literal notranslate"><span class="pre">X</span></code>
+under <code class="docutils literal notranslate"><span class="pre">metric</span></code>. This may be exact, but more likely is approximated via
+nearest neighbor descent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X: array of shape (n_samples, n_features)</strong></dt><dd><p>The input data to compute the k-neighbor graph of.</p>
+</dd>
+<dt><strong>n_neighbors: int</strong></dt><dd><p>The number of nearest neighbors to compute for each sample in <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+</dd>
+<dt><strong>metric: string or callable</strong></dt><dd><p>The metric to use for the computation.</p>
+</dd>
+<dt><strong>metric_kwds: dict</strong></dt><dd><p>Any arguments to pass to the metric computation function.</p>
+</dd>
+<dt><strong>angular: bool</strong></dt><dd><p>Whether to use angular rp trees in NN approximation.</p>
+</dd>
+<dt><strong>random_state: np.random state</strong></dt><dd><p>The random state to use for approximate NN computations.</p>
+</dd>
+<dt><strong>low_memory: bool (optional, default True)</strong></dt><dd><p>Whether to pursue lower memory NNdescent.</p>
+</dd>
+<dt><strong>verbose: bool (optional, default False)</strong></dt><dd><p>Whether to print status data during the computation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>knn_indices: array of shape (n_samples, n_neighbors)</dt><dd><p>The indices on the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> closest points in the dataset.</p>
+</dd>
+<dt>knn_dists: array of shape (n_samples, n_neighbors)</dt><dd><p>The distances to the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> closest points in the dataset.</p>
+</dd>
+<dt>rp_forest: list of trees</dt><dd><p>The random projection forest used for searching (if used, None otherwise)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.raise_disconnected_warning">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">raise_disconnected_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges_removed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices_disconnected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disconnection_distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#raise_disconnected_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.raise_disconnected_warning" title="Permalink to this definition"></a></dt>
+<dd><p>A simple wrapper function to avoid large amounts of code repetition.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.reset_local_connectivity">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">reset_local_connectivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplicial_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_local_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#reset_local_connectivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.reset_local_connectivity" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the local connectivity requirement – each data sample should
+have complete confidence in at least one 1-simplex in the simplicial set.
+We can enforce this by locally rescaling confidences, and then remerging the
+different local simplicial sets together.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>simplicial_set: sparse matrix</strong></dt><dd><p>The simplicial set for which to recalculate with respect to local
+connectivity.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>simplicial_set: sparse_matrix</dt><dd><p>The recalculated simplicial set, now with the local connectivity
+assumption restored.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.simplicial_set_embedding">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">simplicial_set_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_sample_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_kwds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">densmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">densmap_kwds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric=CPUDispatcher(&lt;function</span> <span class="pre">euclidean_grad&gt;)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_metric_kwds={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_output=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tqdm_kwds=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#simplicial_set_embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.simplicial_set_embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a fuzzy simplicial set embedding, using a specified
+initialisation method and then minimizing the fuzzy set cross entropy
+between the 1-skeletons of the high and low dimensional fuzzy simplicial
+sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data: array of shape (n_samples, n_features)</strong></dt><dd><p>The source data to be embedded by UMAP.</p>
+</dd>
+<dt><strong>graph: sparse matrix</strong></dt><dd><p>The 1-skeleton of the high dimensional fuzzy simplicial set as
+represented by a graph for which we require a sparse matrix for the
+(weighted) adjacency matrix.</p>
+</dd>
+<dt><strong>n_components: int</strong></dt><dd><p>The dimensionality of the euclidean space into which to embed the data.</p>
+</dd>
+<dt><strong>initial_alpha: float</strong></dt><dd><p>Initial learning rate for the SGD.</p>
+</dd>
+<dt><strong>a: float</strong></dt><dd><p>Parameter of differentiable approximation of right adjoint functor</p>
+</dd>
+<dt><strong>b: float</strong></dt><dd><p>Parameter of differentiable approximation of right adjoint functor</p>
+</dd>
+<dt><strong>gamma: float</strong></dt><dd><p>Weight to apply to negative samples.</p>
+</dd>
+<dt><strong>negative_sample_rate: int (optional, default 5)</strong></dt><dd><p>The number of negative samples to select per positive sample
+in the optimization process. Increasing this value will result
+in greater repulsive force being applied, greater optimization
+cost, but slightly more accuracy.</p>
+</dd>
+<dt><strong>n_epochs: int (optional, default 0)</strong></dt><dd><p>The number of training epochs to be used in optimizing the
+low dimensional embedding. Larger values result in more accurate
+embeddings. If 0 is specified a value will be selected based on
+the size of the input dataset (200 for large datasets, 500 for small).</p>
+</dd>
+<dt><strong>init: string</strong></dt><dd><dl class="simple">
+<dt>How to initialize the low dimensional embedding. Options are:</dt><dd><ul class="simple">
+<li><p>‘spectral’: use a spectral embedding of the fuzzy 1-skeleton</p></li>
+<li><p>‘random’: assign initial embedding positions at random.</p></li>
+<li><p>A numpy array of initial embedding positions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>random_state: numpy RandomState or equivalent</strong></dt><dd><p>A state capable being used as a numpy random state.</p>
+</dd>
+<dt><strong>metric: string or callable</strong></dt><dd><p>The metric used to measure distance in high dimensional space; used if
+multiple connected components need to be layed out.</p>
+</dd>
+<dt><strong>metric_kwds: dict</strong></dt><dd><p>Key word arguments to be passed to the metric function; used if
+multiple connected components need to be layed out.</p>
+</dd>
+<dt><strong>densmap: bool</strong></dt><dd><p>Whether to use the density-augmented objective function to optimize
+the embedding according to the densMAP algorithm.</p>
+</dd>
+<dt><strong>densmap_kwds: dict</strong></dt><dd><p>Key word arguments to be used by the densMAP optimization.</p>
+</dd>
+<dt><strong>output_dens: bool</strong></dt><dd><p>Whether to output local radii in the original data and the embedding.</p>
+</dd>
+<dt><strong>output_metric: function</strong></dt><dd><p>Function returning the distance between two points in embedding space and
+the gradient of the distance wrt the first argument.</p>
+</dd>
+<dt><strong>output_metric_kwds: dict</strong></dt><dd><p>Key word arguments to be passed to the output_metric function.</p>
+</dd>
+<dt><strong>euclidean_output: bool</strong></dt><dd><p>Whether to use the faster code specialised for euclidean output metrics</p>
+</dd>
+<dt><strong>parallel: bool (optional, default False)</strong></dt><dd><p>Whether to run the computation using numba parallel.
+Running in parallel is non-deterministic, and is not used
+if a random seed has been set, to ensure reproducibility.</p>
+</dd>
+<dt><strong>verbose: bool (optional, default False)</strong></dt><dd><p>Whether to report information on the current progress of the algorithm.</p>
+</dd>
+<dt><strong>tqdm_kwds: dict</strong></dt><dd><p>Key word arguments to be used by the tqdm progress bar.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>embedding: array of shape (n_samples, n_components)</dt><dd><p>The optimized of <code class="docutils literal notranslate"><span class="pre">graph</span></code> into an <code class="docutils literal notranslate"><span class="pre">n_components</span></code> dimensional
+euclidean space.</p>
+</dd>
+<dt>aux_data: dict</dt><dd><p>Auxiliary output returned with the embedding. When densMAP extension
+is turned on, this dictionary includes local radii in the original
+data (<code class="docutils literal notranslate"><span class="pre">rad_orig</span></code>) and in the embedding (<code class="docutils literal notranslate"><span class="pre">rad_emb</span></code>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="umap.umap_.smooth_knn_dist">
+<span class="sig-prename descclassname"><span class="pre">umap.umap_.</span></span><span class="sig-name descname"><span class="pre">smooth_knn_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/umap/umap_.html#smooth_knn_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#umap.umap_.smooth_knn_dist" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a continuous version of the distance to the kth nearest
+neighbor. That is, this is similar to knn-distance but allows continuous
+k values rather than requiring an integral k. In essence we are simply
+computing the distance such that the cardinality of fuzzy set we generate
+is k.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>distances: array of shape (n_samples, n_neighbors)</strong></dt><dd><p>Distances to nearest neighbors for each samples. Each row should be a
+sorted list of distances to a given samples nearest neighbors.</p>
+</dd>
+<dt><strong>k: float</strong></dt><dd><p>The number of nearest neighbors to approximate for.</p>
+</dd>
+<dt><strong>n_iter: int (optional, default 64)</strong></dt><dd><p>We need to binary search for the correct distance value. This is the
+max number of iterations to use in such a search.</p>
+</dd>
+<dt><strong>local_connectivity: int (optional, default 1)</strong></dt><dd><p>The local connectivity required – i.e. the number of nearest
+neighbors that should be assumed to be connected at a local level.
+The higher this value the more connected the manifold becomes
+locally. In practice this should be not more than the local intrinsic
+dimension of the manifold.</p>
+</dd>
+<dt><strong>bandwidth: float (optional, default 1)</strong></dt><dd><p>The target bandwidth of the kernel, larger values will produce
+larger return values.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>knn_dist: array of shape (n_samples,)</dt><dd><p>The distance to kth nearest neighbor, as suitably approximated.</p>
+</dd>
+<dt>nn_dist: array of shape (n_samples,)</dt><dd><p>The distance to the 1st nearest neighbor for each point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scientific_papers.html" class="btn btn-neutral float-left" title="Scientific Papers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

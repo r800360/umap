@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Comparison of Dimension Reduction Implementations &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interactive Visualizations" href="interactive_viz.html" />
+    <link rel="prev" title="How UMAP Works" href="how_umap_works.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance Comparison of Dimension Reduction Implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#performance-scaling-by-dataset-size">Performance scaling by dataset size</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Performance Comparison of Dimension Reduction Implementations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/performance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="performance-comparison-of-dimension-reduction-implementations">
+<h1>Performance Comparison of Dimension Reduction Implementations<a class="headerlink" href="#performance-comparison-of-dimension-reduction-implementations" title="Permalink to this heading"></a></h1>
+<p>Different dimension reduction techniques can have quite different
+computational complexity. Beyond the algorithm itself there is also the
+question of how exactly it is implemented. These two factors can have a
+significant role in how long it actually takes to run a given dimension
+reduction. Furthermore the nature of the data you are trying to reduce
+can also matter – mostly the involves the dimensionality of the original
+data. Here we will take a brief look at the performance characterstics
+of a number of dimension reduction implementations.</p>
+<p>To start let’s get the basic tools we’ll need loaded up – numpy and
+pandas obviously, but also tools to get and resample the data, and the
+time module so we can perform some basic benchmarking.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">resample</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+<p>Next we’ll need the actual dimension reduction implementations. For the
+purposes of this explanation we’ll mostly stick with
+<a class="reference external" href="http://scikit-learn.org/stable/">scikit-learn</a>, but for the sake of
+comparison we’ll also include the
+<a class="reference external" href="https://github.com/DmitryUlyanov/Multicore-TSNE">MulticoreTSNE</a>
+implementation of t-SNE, and
+<a class="reference external" href="https://github.com/pavlin-policar/openTSNE">openTSNE</a> both of which
+have historically had significantly better performance than scikit-learn
+t-SNE (more recent versions of scikit-learn have improved t-SNE
+performance).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="kn">import</span> <span class="n">TSNE</span><span class="p">,</span> <span class="n">LocallyLinearEmbedding</span><span class="p">,</span> <span class="n">Isomap</span><span class="p">,</span> <span class="n">MDS</span><span class="p">,</span> <span class="n">SpectralEmbedding</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">MulticoreTSNE</span> <span class="kn">import</span> <span class="n">MulticoreTSNE</span>
+<span class="kn">from</span> <span class="nn">openTSNE</span> <span class="kn">import</span> <span class="n">TSNE</span> <span class="k">as</span> <span class="n">OpenTSNE</span>
+<span class="kn">from</span> <span class="nn">umap</span> <span class="kn">import</span> <span class="n">UMAP</span>
+</pre></div>
+</div>
+<p>Next we’ll need out plotting tools, and, of course, some data to work
+with. For this performance comparison we’ll default to the now standard
+benchmark of manifold learning: the MNIST digits dataset. We can use
+scikit-learn’s <code class="docutils literal notranslate"><span class="pre">fetch_openml</span></code> to grab it for us.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s1">&#39;notebook&#39;</span><span class="p">,</span>
+        <span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">:(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">)},</span>
+        <span class="n">palette</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s1">&#39;mnist_784&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_data</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">mnist_labels</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now it is time to start looking at performance. To start with let’s look
+at how performance scales with increasing dataset size.</p>
+<section id="performance-scaling-by-dataset-size">
+<h2>Performance scaling by dataset size<a class="headerlink" href="#performance-scaling-by-dataset-size" title="Permalink to this heading"></a></h2>
+<p>As the size of a dataset increases the runtime of a given dimension
+reduction algorithm will increase at varying rates. If you ever want to
+run your algorithm on larger datasets you will care not just about the
+comparative runtime on a single small dataset, but how the performance
+scales out as you move to larger datasets. We can similate this by
+subsampling from MNIST digits (via scikit-learn’s convenient
+<code class="docutils literal notranslate"><span class="pre">resample</span></code> utility) and looking at the runtime for varying sized
+subsamples. Since there is some randomness involved here (both in the
+subsample selection, and in some of the algorithms which have stochastic
+aspects) we will want to run a few examples for each dataset size. We
+can easily package all of this up in a simple function that will return
+a convenient pandas dataframe of dataset sizes and runtimes given an
+algorithm.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">data_size_scaling</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">1600</span><span class="p">],</span> <span class="n">n_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_runs</span><span class="p">):</span>
+            <span class="n">subsample</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">algorithm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">subsample</span><span class="p">)</span>
+            <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="k">del</span> <span class="n">subsample</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;dataset size&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime (s)&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now we just want to run this for each of the various dimension reduction
+implementations so we can look at the results. Since we don’t know how
+long these runs might take we’ll start off with a very small set of
+samples, scaling up to only 1600 samples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">all_algorithms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PCA</span><span class="p">(),</span>
+    <span class="n">UMAP</span><span class="p">(),</span>
+    <span class="n">MulticoreTSNE</span><span class="p">(),</span>
+    <span class="n">OpenTSNE</span><span class="p">(),</span>
+    <span class="n">TSNE</span><span class="p">(),</span>
+    <span class="n">LocallyLinearEmbedding</span><span class="p">(),</span>
+    <span class="n">SpectralEmbedding</span><span class="p">(),</span>
+    <span class="n">Isomap</span><span class="p">(),</span>
+    <span class="n">MDS</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">performance_data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">all_algorithms</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;openTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;OpenTSNE&quot;</span>
+    <span class="k">elif</span> <span class="s1">&#39;MulticoreTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;MulticoreTSNE&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">performance_data</span><span class="p">[</span><span class="n">alg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_size_scaling</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">mnist_data</span><span class="p">,</span> <span class="n">n_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span><span class="si">}</span><span class="s2">] Completed </span><span class="si">{</span><span class="n">alg_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">24</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">PCA</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mi">23</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">UMAP</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">24</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">MulticoreTSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">50</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">OpenTSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">22</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">TSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">44</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">LocallyLinearEmbedding</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">06</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">SpectralEmbedding</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">31</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">Isomap</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">45</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">MDS</span>
+</pre></div>
+</div>
+<p>Now let’s plot the results so we can see what is going on. We’ll use
+seaborn’s regression plot to interpolate the effective scaling. For some
+algorithms this can be a little noisy, especially in this relatively
+small dataset regime, but it will give us a good idea of what is going
+on.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">alg_name</span><span class="p">,</span> <span class="n">perf_data</span> <span class="ow">in</span> <span class="n">performance_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="s1">&#39;dataset size&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime (s)&#39;</span><span class="p">,</span> <span class="n">perf_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">alg_name</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/performance_15_1.png" src="_images/performance_15_1.png" />
+<p>We can see straight away that there are some outliers here. It is notable that
+openTSNE does poorly on small datasets. It does not have the scaling properties of MDS however; for
+larger dataset sizes MDS is going to quickly become completely
+unmanageable which openTSNE has fairly flat scaling. At the same time
+MulticoreTSNE demonstrates that t-SNE can run fairly efficiently. It is
+hard to tell much about the other implementations other than the fact
+that PCA is far and away the fastest option. To see more we’ll have to
+look at runtimes on larger dataset sizes. Both MDS, Isomap and SpectralEmbedding
+will actually take too long to run so let’s restrict ourselves to
+the fastest performing implementations and see what happens as we extend
+out to larger dataset sizes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fast_algorithms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PCA</span><span class="p">(),</span>
+    <span class="n">UMAP</span><span class="p">(),</span>
+    <span class="n">MulticoreTSNE</span><span class="p">(),</span>
+    <span class="n">OpenTSNE</span><span class="p">(),</span>
+    <span class="n">TSNE</span><span class="p">(),</span>
+    <span class="n">LocallyLinearEmbedding</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">fast_performance_data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">fast_algorithms</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;openTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;OpenTSNE&quot;</span>
+    <span class="k">elif</span> <span class="s1">&#39;MulticoreTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;MulticoreTSNE&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">fast_performance_data</span><span class="p">[</span><span class="n">alg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_size_scaling</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">mnist_data</span><span class="p">,</span>
+                                                   <span class="n">sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">1600</span><span class="p">,</span> <span class="mi">3200</span><span class="p">,</span> <span class="mi">6400</span><span class="p">,</span> <span class="mi">12800</span><span class="p">,</span> <span class="mi">25600</span><span class="p">],</span> <span class="n">n_runs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span><span class="si">}</span><span class="s2">] Completed </span><span class="si">{</span><span class="n">alg_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">15</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">PCA</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">10</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="mi">51</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">UMAP</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">05</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">MulticoreTSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">11</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">17</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">OpenTSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">13</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">38</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">TSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">14</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="mi">36</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">LocallyLinearEmbedding</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">alg_name</span><span class="p">,</span> <span class="n">perf_data</span> <span class="ow">in</span> <span class="n">fast_performance_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="s1">&#39;dataset size&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime (s)&#39;</span><span class="p">,</span> <span class="n">perf_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">alg_name</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/performance_18_1.png" src="_images/performance_18_1.png" />
+<p>At this point we begin to see some significant differentiation among the
+different implementations. In the earlier plot OpenTSNE looked to be
+performing relatively poorly, but now the scaling effects kick in, and
+we see that is is faster than most. Similarly MulticoreTSNE looked to be
+slower than some of the other algorithms in th earlier plot, but as we
+scale out to larger datasets we see that its relative scaling
+performance is superior to the scikit-learn implementations of
+TSNE and locally linear embedding.</p>
+<p>It is probably worth extending out further – up to the full MNIST digits
+dataset. To manage to do that in any reasonable amount of time we’ll
+have to restrict out attention to an even smaller subset of
+implementations. We will pare things down to just OpenTSNE,
+MulticoreTSNE, PCA and UMAP.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">very_fast_algorithms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PCA</span><span class="p">(),</span>
+    <span class="n">UMAP</span><span class="p">(),</span>
+    <span class="n">MulticoreTSNE</span><span class="p">(),</span>
+    <span class="n">OpenTSNE</span><span class="p">(),</span>
+<span class="p">]</span>
+<span class="n">vfast_performance_data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">very_fast_algorithms</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;openTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;OpenTSNE&quot;</span>
+    <span class="k">elif</span> <span class="s1">&#39;MulticoreTSNE&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="s2">&quot;MulticoreTSNE&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">vfast_performance_data</span><span class="p">[</span><span class="n">alg_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_size_scaling</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">mnist_data</span><span class="p">,</span>
+                                                    <span class="n">sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">3200</span><span class="p">,</span> <span class="mi">6400</span><span class="p">,</span> <span class="mi">12800</span><span class="p">,</span> <span class="mi">25600</span><span class="p">,</span> <span class="mi">51200</span><span class="p">,</span> <span class="mi">70000</span><span class="p">],</span> <span class="n">n_runs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span><span class="si">}</span><span class="s2">] Completed </span><span class="si">{</span><span class="n">alg_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">14</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">22</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">PCA</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">14</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">59</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">UMAP</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">17</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">58</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">MulticoreTSNE</span>
+<span class="p">[</span><span class="n">Sat</span> <span class="n">Feb</span> <span class="mi">22</span> <span class="mi">17</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">14</span> <span class="mi">2020</span><span class="p">]</span> <span class="n">Completed</span> <span class="n">OpenTSNE</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">alg_name</span><span class="p">,</span> <span class="n">perf_data</span> <span class="ow">in</span> <span class="n">vfast_performance_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="s1">&#39;dataset size&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime (s)&#39;</span><span class="p">,</span> <span class="n">perf_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">alg_name</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/performance_21_1.png" src="_images/performance_21_1.png" />
+<p>Here we see UMAP’s advantages over t-SNE really coming to the forefront.
+While UMAP is clearly slower than PCA, its scaling performance is
+dramatically better than MulticoreTSNE, and, despite the impressive
+scaling performance of openTSNE, UMAP continues to outperform it. Based
+on the slopes of the lines, for even larger datasets the difference
+between UMAP and t-SNE is only going to grow.</p>
+<p>This concludes our look at scaling by dataset size. The short summary is
+that PCA is far and away the fastest option, but you are potentially
+giving up a lot for that speed. UMAP, while not competitive with PCA, is
+clearly the next best option in terms of performance among the
+implementations explored here. Given the quality of results that UMAP
+can provide we feel it is clearly a good option for dimension reduction.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="how_umap_works.html" class="btn btn-neutral float-left" title="How UMAP Works" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interactive_viz.html" class="btn btn-neutral float-right" title="Interactive Visualizations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

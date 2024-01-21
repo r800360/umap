@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document embedding using UMAP &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Embedding to non-Euclidean spaces" href="embedding_space.html" />
+    <link rel="prev" title="Improving the Separation Between Similar Classes Using a Mutual k-NN Graph" href="mutual_nn_umap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Document embedding using UMAP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-raw-counts">Using raw counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-tf-idf">Using TF-IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#potential-applications">Potential applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Document embedding using UMAP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/document_embedding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="document-embedding-using-umap">
+<h1>Document embedding using UMAP<a class="headerlink" href="#document-embedding-using-umap" title="Permalink to this heading"></a></h1>
+<p>This is a tutorial of using UMAP to embed text (but this can be extended
+to any collection of tokens). We are going to use the <a class="reference external" href="http://qwone.com/~jason/20Newsgroups/">20 newsgroups
+dataset</a> which is a collection
+of forum posts labelled by topic. We are going to embed these documents
+and see that similar documents (i.e. posts in the same subforum) will
+end up close together. You can use this embedding for other downstream
+tasks, such as visualizing your corpus, or run a clustering algorithm
+(e.g. HDBSCAN). We will use a bag of words model and use UMAP on the
+count vectors as well as the TF-IDF vectors.</p>
+<p>To start with let’s load the relevant libraries. <strong>This requires UMAP version &gt;= 0.4.0.</strong></p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">umap</span>
+<span class="kn">import</span> <span class="nn">umap.plot</span>
+
+<span class="c1"># Used to get the data</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span><span class="p">,</span> <span class="n">TfidfVectorizer</span>
+
+<span class="c1"># Some plotting libraries</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">notebook</span>
+<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">show</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="n">output_notebook</span><span class="p">,</span> <span class="n">output_file</span>
+<span class="kn">from</span> <span class="nn">bokeh.resources</span> <span class="kn">import</span> <span class="n">INLINE</span>
+<span class="n">output_notebook</span><span class="p">(</span><span class="n">resources</span><span class="o">=</span><span class="n">INLINE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next let’s download and explore the 20 newsgroups dataset.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+                             <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">280</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mi">52</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">332</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mi">460</span> <span class="n">ms</span>
+</pre></div>
+</div>
+<p>Let’s see the size of the corpus:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s1"> documents&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span><span class="si">}</span><span class="s1"> categories&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">18846</span> <span class="n">documents</span>
+<span class="mi">20</span> <span class="n">categories</span>
+</pre></div>
+</div>
+<p>Here are the categories of documents. As you can see many are related to
+one another (e.g. ‘comp.sys.ibm.pc.hardware’ and
+‘comp.sys.mac.hardware’) but they are not all correlated (e.g. ‘sci.med’
+and ‘rec.sport.baseball’).</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">target_names</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;alt.atheism&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;comp.graphics&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;comp.os.ms-windows.misc&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;comp.sys.ibm.pc.hardware&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;comp.sys.mac.hardware&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;comp.windows.x&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;misc.forsale&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;rec.autos&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;rec.motorcycles&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;rec.sport.baseball&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;rec.sport.hockey&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;sci.crypt&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;sci.electronics&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;sci.med&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;sci.space&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;soc.religion.christian&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;talk.politics.guns&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;talk.politics.mideast&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;talk.politics.misc&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;talk.religion.misc&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Let’s look at a couple of sample documents:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">document</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Category: </span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;---------------------------&#39;</span><span class="p">)</span>
+    <span class="c1"># Print the first 500 characters of the post</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">document</span><span class="p">[:</span><span class="mi">500</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;---------------------------&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<pre class="literal-block">Category: rec.sport.hockey
+---------------------------
+From: Mamatha Devineni Ratnam &lt;<a class="reference external" href="mailto:mr47+&#37;&#52;&#48;andrew&#46;cmu&#46;edu">mr47+<span>&#64;</span>andrew<span>&#46;</span>cmu<span>&#46;</span>edu</a>&gt;
+Subject: Pens fans reactions
+Organization: Post Office, Carnegie Mellon, Pittsburgh, PA
+Lines: 12
+NNTP-Posting-Host: po4.andrew.cmu.edu
+
+
+
+I am sure some bashers of Pens fans are pretty confused about the lack
+of any kind of posts about the recent Pens massacre of the Devils. Actually,
+I am  bit puzzled too and a bit relieved. However, I am going to put an end
+to non-PIttsburghers' relief with a bit of praise for the Pens. Man, they
+are killin
+---------------------------
+Category: comp.sys.ibm.pc.hardware
+---------------------------
+From: <a class="reference external" href="mailto:mblawson&#37;&#52;&#48;midway&#46;ecn&#46;uoknor&#46;edu">mblawson<span>&#64;</span>midway<span>&#46;</span>ecn<span>&#46;</span>uoknor<span>&#46;</span>edu</a> (Matthew B Lawson)
+Subject: Which high-performance VLB video card?
+Summary: Seek recommendations for VLB video card
+Nntp-Posting-Host: midway.ecn.uoknor.edu
+Organization: Engineering Computer Network, University of Oklahoma, Norman, OK, USA
+Keywords: orchid, stealth, vlb
+Lines: 21
+
+  My brother is in the market for a high-performance video card that supports
+VESA local bus with 1-2MB RAM.  Does anyone have suggestions/ideas on:
+
+  - Diamond Stealth Pro Local
+---------------------------
+Category: talk.politics.mideast
+---------------------------
+From: <a class="reference external" href="mailto:hilmi-er&#37;&#52;&#48;dsv&#46;su&#46;se">hilmi-er<span>&#64;</span>dsv<span>&#46;</span>su<span>&#46;</span>se</a> (Hilmi Eren)
+Subject: Re: ARMENIA SAYS IT COULD SHOOT DOWN TURKISH PLANES (Henrik)
+Lines: 95
+Nntp-Posting-Host: viktoria.dsv.su.se
+Reply-To: <a class="reference external" href="mailto:hilmi-er&#37;&#52;&#48;dsv&#46;su&#46;se">hilmi-er<span>&#64;</span>dsv<span>&#46;</span>su<span>&#46;</span>se</a> (Hilmi Eren)
+Organization: Dept. of Computer and Systems Sciences, Stockholm University
+
+
+
+
+|&gt;The student of &quot;regional killings&quot; alias Davidian (not the Davidian religios sect) writes:
+
+
+|&gt;Greater Armenia would stretch from Karabakh, to the Black Sea, to the
+|&gt;Mediterranean, so if you use the term &quot;Greater Armenia
+---------------------------</pre>
+<p>Now we will create a dataframe with the target labels to be used in plotting. This will allow us to see the newsgroup
+when we hover over the plotted points (if using interactive plotting). This will help us evaluate (by eye) how good the embedding looks.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">category_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">target</span><span class="p">]</span>
+<span class="n">hover_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">category_labels</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<section id="using-raw-counts">
+<h2>Using raw counts<a class="headerlink" href="#using-raw-counts" title="Permalink to this heading"></a></h2>
+<p>Next, we are going to use a bag-of-words approach (i.e. word order doesn’t
+matter) and construct a word document matrix. In this matrix the rows
+will correspond to a document (i.e. post) and each column will
+correspond to a particular word. The values will be the counts of how
+many times a given word appeared in a particular document.</p>
+<p>We will use sklearns CountVectorizer function to do this for us along
+with a couple other preprocessing steps:</p>
+<ol class="arabic simple">
+<li><p>Split the text into tokens (i.e. words) by splitting on whitespace</p></li>
+<li><p>Remove english stopwords (the, and, etc)</p></li>
+<li><p>Remove all words which occur less than 5 times in the entire corpus
+(via the min_df parameter)</p></li>
+</ol>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="n">word_doc_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This gives us a 18846x34880 matrix where there are 18846 documents (same
+as above) and 34880 unique tokens. This matrix is sparse since most
+words do not appear in most documents.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">word_doc_matrix</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="mi">18846</span><span class="n">x34880</span> <span class="n">sparse</span> <span class="n">matrix</span> <span class="n">of</span> <span class="nb">type</span> <span class="s1">&#39;&lt;class &#39;</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="s1">&#39;&gt;&#39;</span>
+    <span class="k">with</span> <span class="mi">1939023</span> <span class="n">stored</span> <span class="n">elements</span> <span class="ow">in</span> <span class="n">Compressed</span> <span class="n">Sparse</span> <span class="n">Row</span> <span class="nb">format</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Now we are going to do dimension reduction using UMAP to reduce the matrix
+from 34880 dimensions to 2 dimensions (since n_components=2). We need a
+distance metric and will use <a class="reference external" href="https://en.wikipedia.org/wiki/Hellinger_distance">Hellinger
+distance</a> which
+measures the similarity between two probability distributions. Each
+document has a set of counts generated by a <a class="reference external" href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial
+distribution</a>
+where we can use Hellinger distance to measure the similarity of these
+distributions.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">embedding</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;hellinger&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">word_doc_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">2</span><span class="nb">min</span> <span class="mi">24</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.18</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">2</span><span class="nb">min</span> <span class="mi">25</span><span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mi">2</span><span class="nb">min</span> <span class="mi">3</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>Now we have an embedding of 18846x2.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding</span><span class="o">.</span><span class="n">embedding_</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">18846</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s plot the embedding. If you are running this in a notebook, you should use the
+interactive plotting method as it lets you hover over your points and see what
+category they belong to.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For interactive plotting use</span>
+<span class="c1"># f = umap.plot.interactive(embedding, labels=dataset.target, hover_data=hover_df, point_size=1)</span>
+<span class="c1"># show(f)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">hover_df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="_images/20newsgroups_hellinger_counts.png" src="_images/20newsgroups_hellinger_counts.png" />
+<p>As you can see this does reasonably well. There is some separation and
+groups that you would expect to be similar (such as ‘rec.sport.baseball’
+and ‘rec.sport.hockey’) are close together. The big clump in the middle
+corresponds to a lot of extremely similar newsgroups like
+‘comp.sys.ibm.pc.hardware’ and ‘comp.sys.mac.hardware’.</p>
+</section>
+<section id="using-tf-idf">
+<h2>Using TF-IDF<a class="headerlink" href="#using-tf-idf" title="Permalink to this heading"></a></h2>
+<p>We will now do the same pipeline with the only change being the use of
+<a class="reference external" href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">TF-IDF</a> weighting.
+TF-IDF gives less weight to words that appear frequently across a large
+number of documents since they are more popular in general. It asserts
+a higher weight to words that appear frequently in a smaller subset of
+documents since they are probably important words for those documents.</p>
+<p>To do the TF-IDF weighting we will use sklearns TfidfVectorizer with the
+same parameters as CountVectorizer above.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tfidf_vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="n">tfidf_word_doc_matrix</span> <span class="o">=</span> <span class="n">tfidf_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We get a matrix of the same size as before:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">tfidf_word_doc_matrix</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="mi">18846</span><span class="n">x34880</span> <span class="n">sparse</span> <span class="n">matrix</span> <span class="n">of</span> <span class="nb">type</span> <span class="s1">&#39;&lt;class &#39;</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="s1">&#39;&gt;&#39;</span>
+    <span class="k">with</span> <span class="mi">1939023</span> <span class="n">stored</span> <span class="n">elements</span> <span class="ow">in</span> <span class="n">Compressed</span> <span class="n">Sparse</span> <span class="n">Row</span> <span class="nb">format</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Again we use Hellinger distance and UMAP to embed the documents</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">tfidf_embedding</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;hellinger&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tfidf_word_doc_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">2</span><span class="nb">min</span> <span class="mi">19</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">1.27</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">2</span><span class="nb">min</span> <span class="mi">20</span><span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mi">1</span><span class="nb">min</span> <span class="mi">57</span><span class="n">s</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For interactive plotting use</span>
+<span class="c1"># fig = umap.plot.interactive(tfidf_embedding, labels=dataset.target, hover_data=hover_df, point_size=1)</span>
+<span class="c1"># show(fig)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">tfidf_embedding</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">hover_df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="_images/20newsgroups_hellinger_tfidf.png" src="_images/20newsgroups_hellinger_tfidf.png" />
+<p>The results look fairly similar to before but this can be a useful trick
+to have in your toolbox.</p>
+</section>
+<section id="potential-applications">
+<h2>Potential applications<a class="headerlink" href="#potential-applications" title="Permalink to this heading"></a></h2>
+<p>Now that we have an embedding, what can we do with it?</p>
+<ul class="simple">
+<li><p>Explore/visualize your corpus to identify topics/trends</p></li>
+<li><p>Cluster the embedding to find groups of related documents</p></li>
+<li><p>Look for nearest neighbours to find related documents</p></li>
+<li><p>Look for anomalous documents</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mutual_nn_umap.html" class="btn btn-neutral float-left" title="Improving the Separation Between Similar Classes Using a Mutual k-NN Graph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="embedding_space.html" class="btn btn-neutral float-right" title="Embedding to non-Euclidean spaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlignedUMAP for Time Varying Data &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Precomputed k-nn" href="precomputed_k-nn.html" />
+    <link rel="prev" title="How to use AlignedUMAP" href="aligned_umap_basic_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AlignedUMAP for Time Varying Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#processing-congressional-voting-records">Processing Congressional Voting Records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applying-alignedumap">Applying AlignedUMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualizing-the-results">Visualizing the Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="interactive_viz.html">Interactive Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">AlignedUMAP for Time Varying Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aligned_umap_politics_demo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="alignedumap-for-time-varying-data">
+<h1>AlignedUMAP for Time Varying Data<a class="headerlink" href="#alignedumap-for-time-varying-data" title="Permalink to this heading"></a></h1>
+<p>It is not uncommon to have datasets that can be partitioned into
+segments, often with respect to time, where we want to understand not
+only the structure of each segment, but how that structure changes over
+the different segments. An example of this is the relative political
+leanings of the US congress over time. In determining the relative
+political leanings we can look at the representatives voting record on
+roll call votes, with the presumption that representatives with similar
+political principles will have similar voting records. We can, of
+course, look at such data for any given congress, but since
+representatives are commonly re-elected we can also consider how their
+relative position in congress changes with time – an ideal use case for
+AlignedUMAP.</p>
+<p>First we’ll need a selection of libraries. Aside from UMAP we will need
+to do a little bit of data wrangling; for that we’ll need pandas, and
+also for matching up names of representatives we’ll make use of the
+library <code class="docutils literal notranslate"><span class="pre">fuzzywuzzy</span></code> which provides easy to use fuzzy string matching.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">umap</span>
+<span class="kn">import</span> <span class="nn">umap.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">import</span> <span class="nn">umap.aligned_umap</span>
+<span class="kn">import</span> <span class="nn">sklearn.decomposition</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="kn">import</span> <span class="n">fuzz</span><span class="p">,</span> <span class="n">process</span>
+<span class="kn">import</span> <span class="nn">re</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">,</span> <span class="n">color_codes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next we’ll need to voting records for the representatives, along with
+the associated metadata from the roll call vote records. You can obtain
+the data <a class="reference external" href="https://clerk.house.gov">https://clerk.house.gov</a>; a notebook demonstrating how to pull
+down the data and parse it into the csv files used here is available
+<a class="reference external" href="https://github.com/lmcinnes/umap_doc_notebooks/blob/master/parse_voting_records.ipynb">here</a>.</p>
+<section id="processing-congressional-voting-records">
+<h2>Processing Congressional Voting Records<a class="headerlink" href="#processing-congressional-voting-records" title="Permalink to this heading"></a></h2>
+<p>The voting records provide a row for each representative with a -1 for
+“No”, 0 for “Present” or “Not Voting”, and 1 for “Aye”. A separate csv
+file contains the raw data of all the votes with a row for each
+legislators vote on each roll-call item. We really just need some
+metadata – which state they represent and the party they represent so we
+can decorate the results with this kind of information later. For that
+we just need to extra the names, states, and parties for each year. We
+can grab those columns and then drop duplicates. A catch: the party is
+very occasionally entered incorrectly, and occasionally representatives
+switch parties, making duplicated rows. We’ll just take the first entry
+of such duplciates for now.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">votes</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;house_votes/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_voting_record.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+         <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span><span class="mi">2021</span><span class="p">)]</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;house_votes/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_full.csv&quot;</span><span class="p">,</span>
+    <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)[[</span><span class="s2">&quot;legislator&quot;</span><span class="p">,</span> <span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;party&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s2">&quot;legislator&quot;</span><span class="p">,</span> <span class="s2">&quot;state&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;legislator&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span><span class="mi">2021</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Let’s take a look at the voting record for a single year to see what
+sort of data we are looking at:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">votes</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>104-1st-1</th>
+      <th>104-1st-10</th>
+      <th>104-1st-100</th>
+      <th>104-1st-101</th>
+      <th>104-1st-102</th>
+      <th>104-1st-103</th>
+      <th>104-1st-104</th>
+      <th>104-1st-105</th>
+      <th>104-1st-106</th>
+      <th>104-1st-107</th>
+      <th>...</th>
+      <th>104-1st-90</th>
+      <th>104-1st-91</th>
+      <th>104-1st-92</th>
+      <th>104-1st-93</th>
+      <th>104-1st-94</th>
+      <th>104-1st-95</th>
+      <th>104-1st-96</th>
+      <th>104-1st-97</th>
+      <th>104-1st-98</th>
+      <th>104-1st-99</th>
+    </tr>
+    <tr>
+      <th>legislator</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Abercrombie</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Ackerman</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>Allard</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>Andrews</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>Archer</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>Young (AK)</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>Young (FL)</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>Zeliff</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>Zimmer</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>...</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>de la Garza</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>438 rows × 885 columns</p>
+</div><p>We can examine the associated metadata for the same year.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>legislator</th>
+      <th>state</th>
+      <th>party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Abercrombie</td>
+      <td>HI</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Ackerman</td>
+      <td>NY</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Allard</td>
+      <td>CO</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Andrews</td>
+      <td>NJ</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Archer</td>
+      <td>TX</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>430</th>
+      <td>Young (AK)</td>
+      <td>AK</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>431</th>
+      <td>Young (FL)</td>
+      <td>FL</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>432</th>
+      <td>Zeliff</td>
+      <td>NH</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>433</th>
+      <td>Zimmer</td>
+      <td>NJ</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>de la Garza</td>
+      <td>TX</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+<p>438 rows × 3 columns</p>
+</div><p>You may note that sometimes representatives names list a state in
+parenthesis afterwards. This is to provide disambiguation for
+representatives that happen to have the last name. This actually
+complicates matters for us since the disambiguation is only applied in
+those cases where there is a name collision in that sitting of congress.
+That means that for several years a representative may have simply their
+last name, but then switch to being disambiguated, before potentially
+switching back again. This would make it much harder to consistently
+treck representatives over their entire career in congress. To fix this
+up we’ll simply re-index by a unique representative ID that has their
+last name, party, and state all listed over all the voting dataframes.
+We’ll need a function to generate those from the metadata, and then
+we’ll need to apply it to all the reocrds. Importantly we’ll have to
+finesse those situations where representatives are listed twice (under
+un-ambiguous and disambiguated names) with some groupby tricks.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unique_legislator</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">party</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">legislator</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">party</span>
+    <span class="c1"># Strip of disambiguating state designators</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+) \([A-Z]</span><span class="si">{2}</span><span class="s1">\)&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">party</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">)&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">votes</span><span class="p">):</span>
+    <span class="n">votes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">unique_legislator</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;legislator_index&quot;</span><span class="p">)</span>
+    <span class="n">votes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">votes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">unique_legislator</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;legislator_index&quot;</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now that we have the data at least a little wrangled into order there is
+the question of ensuring some degree of continuity fore representatives.
+To make this a little easier we’ll use voting records over <em>four year
+spans</em> instead of over single years. Equally importantly we’ll do this
+in a sliding window fashion so that we consider the record for 1990-1994
+and then the record for 1991-1995 and so on. By overlapping the windows
+in this way we can ensure a little greater continuity of political
+stance through the years. To make this happen we just have to merge data
+frames in a sliding set of pairs, and then merge the pairs via the same
+approach:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">votes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;legislator_index&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">votes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">votes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="p">]</span> <span class="o">+</span> <span class="n">votes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;legislator_index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metadata</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">metadata</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="p">]</span> <span class="o">+</span> <span class="n">metadata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+<p>That’s the pairs of years; now we merge these pairwise to get sets of
+four years worth of votes.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">votes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;legislator_index&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">votes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">votes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="p">]</span> <span class="o">+</span> <span class="n">votes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metadata</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">metadata</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="p">]</span> <span class="o">+</span> <span class="n">metadata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</section>
+<section id="applying-alignedumap">
+<h2>Applying AlignedUMAP<a class="headerlink" href="#applying-alignedumap" title="Permalink to this heading"></a></h2>
+<p>To make use of AlignedUMAP we need to generate relations between
+consecutive dataset slices. In this case that means we need to have a
+relation describing row from one four year slice corresponds to a row
+from the following four year slice for the same representative. For
+AlignedUMAP to work this should be formatted as a list of dictionaries;
+each dictionary gives a mapping from indices of one slice to indices of
+the next. Importantly this mapping can be partial – it only has to
+relate indices for which there is a match between the two slices.</p>
+<p>The vote dataframes that we are using for slices are already indexed
+with unique identifiers for representatives, so to make relations we
+simply have to match them up, creating a dictionary of indices from one
+to the other. In practice we can do this relatively efficiently by using
+pandas to merge dataframes on the pandas indexes of the two vote
+dataframes with the data being simply the numeric indices of the rows.
+The resulting dictionary is then just the dictionary of pairs given by
+the inner join.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_relation</span><span class="p">(</span><span class="n">from_df</span><span class="p">,</span> <span class="n">to_df</span><span class="p">):</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">from_df</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">from_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">to_df</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">to_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">merge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">merge</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With a function for relation creation in place we simply need to apply
+it to each consecutive pair of vote dataframes.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">relations</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_relation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">votes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">votes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+</pre></div>
+</div>
+<p>If you are still unsure of what these relations are it might be
+beneficial to look at a few of the dictionaries, along with the
+corresponding pairs of vote dataframes. Here is (part of) the first
+relation dictionary:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">relations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="mi">3</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+ <span class="mi">4</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+ <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+ <span class="mi">6</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+ <span class="mi">7</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+ <span class="mi">8</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+ <span class="mi">9</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+ <span class="mi">10</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+ <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+ <span class="mi">12</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+ <span class="mi">13</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+ <span class="mi">14</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+ <span class="mi">15</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+ <span class="o">...</span>
+ <span class="mi">475</span><span class="p">:</span> <span class="mi">547</span><span class="p">,</span>
+ <span class="mi">476</span><span class="p">:</span> <span class="mi">549</span><span class="p">,</span>
+ <span class="mi">477</span><span class="p">:</span> <span class="mi">550</span><span class="p">,</span>
+ <span class="mi">478</span><span class="p">:</span> <span class="mi">552</span><span class="p">,</span>
+ <span class="mi">479</span><span class="p">:</span> <span class="mi">553</span><span class="p">,</span>
+ <span class="mi">480</span><span class="p">:</span> <span class="mi">554</span><span class="p">,</span>
+ <span class="mi">481</span><span class="p">:</span> <span class="mi">555</span><span class="p">,</span>
+ <span class="mi">482</span><span class="p">:</span> <span class="mi">556</span><span class="p">,</span>
+ <span class="mi">483</span><span class="p">:</span> <span class="mi">557</span><span class="p">,</span>
+ <span class="mi">484</span><span class="p">:</span> <span class="mi">559</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we are finally in a position to run AlignedUMAP. Most of the
+standard UMAP parameters are available for use, including choosing a
+metric and a number of neighbors. Here we will also make use of the
+extra AlignedUMAP parameters <code class="docutils literal notranslate"><span class="pre">alignment_regularisation</span></code> and
+<code class="docutils literal notranslate"><span class="pre">alignment_window_size</span></code>. The first is a value that weights how
+important retaining alignment is. Typically the value is much smaller
+than this (the default is 0.01), but given the relatively high
+volatility in voting records we are going to increase it here. The
+second parameter, <code class="docutils literal notranslate"><span class="pre">alignment_window_size</span></code> determines how far out on
+either side AlignedUMAP will look when aligning embeddings – even though
+the relations are specified only between consecutive slices it will
+chain them together to construct relations reaching further. In this
+case we’ll have it look as far out as 5 slices either side.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">aligned_mapper</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">aligned_umap</span><span class="o">.</span><span class="n">AlignedUMAP</span><span class="p">(</span>
+    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">alignment_regularisation</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">alignment_window_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">votes</span><span class="p">,</span> <span class="n">relations</span><span class="o">=</span><span class="n">relations</span><span class="p">)</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">aligned_mapper</span><span class="o">.</span><span class="n">embeddings_</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">6</span><span class="nb">min</span> <span class="mi">7</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mf">30.6</span> <span class="n">s</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">6</span><span class="nb">min</span> <span class="mi">37</span><span class="n">s</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mi">5</span><span class="nb">min</span> <span class="mi">57</span><span class="n">s</span>
+</pre></div>
+</div>
+</section>
+<section id="visualizing-the-results">
+<h2>Visualizing the Results<a class="headerlink" href="#visualizing-the-results" title="Permalink to this heading"></a></h2>
+<p>Now we need to plot the data somehow. To make the visualization
+interesting it would be beneficial to have some colour variation –
+ideally showing a different view of the relative political stance. For
+that we want to attempt to get an idea of the position of each candidate
+from an alternative source. To do this we can try to extract the vote
+margin that the representative won by. The catch here is that while the
+election data can be collected and processed, the names don’t match
+perfectly as they come from a different source. That means we need to do
+our best to get a name match for each candidate. We’ll use fuzzy string
+matching restricted to the relevant year and state to try to get a good
+match. A notebook providing details for obtaining and processing the
+election winners data can be found
+<a class="reference external" href="https://github.com/lmcinnes/umap_doc_notebooks/blob/master/voting_data_by_district.ipynb">here</a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">election_winners</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;election_winners_1976-2018.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">election_winners</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>state</th>
+      <th>district</th>
+      <th>winner</th>
+      <th>party</th>
+      <th>winning_ratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1976</td>
+      <td>AK</td>
+      <td>0</td>
+      <td>Don Young</td>
+      <td>republican</td>
+      <td>0.289986</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1976</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>Jack Edwards</td>
+      <td>republican</td>
+      <td>0.374808</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1976</td>
+      <td>AL</td>
+      <td>2</td>
+      <td>William L. \\"Bill\"\" Dickinson"</td>
+      <td>republican</td>
+      <td>0.423953</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1976</td>
+      <td>AL</td>
+      <td>3</td>
+      <td>Bill Nichols</td>
+      <td>democrat</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1976</td>
+      <td>AL</td>
+      <td>4</td>
+      <td>Tom Bevill</td>
+      <td>democrat</td>
+      <td>0.803825</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>Now we need to simply go through the metadata and fill it out with the
+extra information we can glean from the election winners data. Since we
+can’t do exact name matching (the data for both is somewhat messy when
+it comes to text fields like names) we can’t simply perform a join, but
+must instead process things year by year and representative by
+representative, finding the best string match on name that we can for
+the given year and state election. In practice we are undoubtedly going
+to get some of these wrong, and if the goal was a rigorous analysis
+based on this data a lot more care would need to be taken. Since this is
+just a demonstration and we’ll only be using this extra information as a
+colour channel in plots we can excuise a few errors here and there from
+in-exact data processing.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_name_misses</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="mi">1990</span><span class="p">):</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;partisan_lean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;district&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()):</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">party</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">legislator</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">party</span>
+        <span class="c1"># Strip of disambiguating state designators</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+) \([A-Z]</span><span class="si">{2}</span><span class="s1">\)&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+        <span class="c1"># Get a party designator matching the election_winners data</span>
+        <span class="n">party</span> <span class="o">=</span> <span class="s2">&quot;republican&quot;</span> <span class="k">if</span> <span class="n">party</span> <span class="o">==</span> <span class="s2">&quot;R&quot;</span> <span class="k">else</span> <span class="s2">&quot;democrat&quot;</span>
+        <span class="c1"># Restrict to the right state and time-frame</span>
+        <span class="n">state_election_winners</span> <span class="o">=</span> <span class="n">election_winners</span><span class="p">[(</span><span class="n">election_winners</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">state</span><span class="p">)</span>
+                                                  <span class="o">&amp;</span> <span class="p">(</span><span class="n">election_winners</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;=</span> <span class="n">year</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
+                                                  <span class="o">&amp;</span> <span class="p">(</span><span class="n">election_winners</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)]</span>
+        <span class="c1"># Try to match a name; and fail &quot;gracefully&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">matched_name</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">extractOne</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">state_election_winners</span><span class="o">.</span><span class="n">winner</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="n">scorer</span><span class="o">=</span><span class="n">fuzz</span><span class="o">.</span><span class="n">partial_token_sort_ratio</span><span class="p">,</span>
+                <span class="n">score_cutoff</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">matched_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># If we got a unique match, get the election data</span>
+        <span class="k">if</span> <span class="n">matched_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="n">state_election_winners</span><span class="p">[</span><span class="n">state_election_winners</span><span class="o">.</span><span class="n">winner</span> <span class="o">==</span> <span class="n">matched_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">winner</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># We either have none, one, or *several* match elections. Take a best guess.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">winner</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">loc</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;partisan_lean&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="k">if</span> <span class="n">party</span> <span class="o">==</span> <span class="s2">&quot;republican&quot;</span> <span class="k">else</span> <span class="mf">0.75</span>
+            <span class="n">n_name_misses</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">winner</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">winner</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">winner</span><span class="o">.</span><span class="n">winning_ratio</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">winner</span><span class="o">.</span><span class="n">district</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">winner</span><span class="o">.</span><span class="n">winning_ratio</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to match a name </span><span class="si">{</span><span class="n">n_name_misses</span><span class="si">}</span><span class="s2"> times&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Failed</span> <span class="n">to</span> <span class="n">match</span> <span class="n">a</span> <span class="n">name</span> <span class="mi">100</span> <span class="n">times</span>
+</pre></div>
+</div>
+<p>Now that we have the relative partisan leanings based on district
+election margins we can color the plot. We can obviously label the plot
+with the representatives names. The last remaining catch (when using
+matplotlib for the plotting) is the get the plot bounds (since we will
+be placing text markers directly into the plot, and thus not
+autogenerating bounds). This is a simple enough matter of computing some
+bounds as an adjustment a little outside the data limits.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">axis_bounds</span><span class="p">(</span><span class="n">embedding</span><span class="p">):</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span>
+    <span class="n">adj_h</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">adj_v</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">0.05</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">left</span> <span class="o">-</span> <span class="n">adj_h</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="n">adj_h</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">-</span> <span class="n">adj_v</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="n">adj_v</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now for the plot. Let’s pick a random time slice (you are welcome to try
+others) and draw the representatives names in their embedded locations
+for that slice, coloured by their relative election victory margin.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">e</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">axis_bounds</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="n">e</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="n">e</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">embeddings</span><span class="p">[</span><span class="n">e</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="n">e</span><span class="p">][</span><span class="s2">&quot;partisan_lean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+            <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_politics_demo_31_0.png" src="_images/aligned_umap_politics_demo_31_0.png" />
+<p>This gives a good idea of the layout in a single time slices, and by
+plotting different time slices we can get some idea of how things have
+evolved. We can go further, however, by plotting a representative as
+curve through time as their relative political position in congress
+changes. For that we will need a 3D plot – we need both the UMAP x and y
+coordinates, as well as a third coordinate giving the year. I found this
+easiest to do in plotly, so let’s import that. To make nice smooth
+curves through time we will also import the <code class="docutils literal notranslate"><span class="pre">scipy.interpolate</span></code> module
+which will let is interpolate a smooth curve from the discrete positions
+that a representatives appears in over time.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+</pre></div>
+</div>
+<p>Wrangling the data into shape for this is the next step; first let’s get
+everything in a single dataframe that we can extract relevant data from
+on an as-needed basis.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">embeddings</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="n">year</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">2021</span><span class="p">))])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;representative_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">v</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">votes</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;partisan_lean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="s2">&quot;partisan_lean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Next we’ll need that interpolation of the curve for a given
+representative. We’ll write a function to handle that as there is a
+little bit of case-based logic that makes it non-trivial. We are going
+to get handed year data and want to interpolate the UMAP x and y
+coordinates for a single representative.</p>
+<p>The first major catch is that many representatives don’t have a single
+contiguous block of years for which they were in congress: they were
+elected for several years, missed re-election, and then came back to
+congress several years later (possibly in another district). Each such
+block of contiguous years needs to be a separate path, and we shouldn’t
+connect them. We therefore need some logic to find the contiguous blocks
+and generate smooth paths for each of them.</p>
+<p>Another catch is that some representatives have only been in office for
+a year or two (special elections and so forth) and we can’t do a cubic
+spline interpolation for that; we can devolve to linear interpolation or
+quadratic splines for those cases, so simply add the point itself for
+the odd single year cases.</p>
+<p>With those issues in hand we can then simply use the scipy <code class="docutils literal notranslate"><span class="pre">interp1d</span></code>
+function to generate smooth curves through the points.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">INTERP_KIND</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;quadratic&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s2">&quot;cubic&quot;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">interpolate_paths</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">rep_id</span><span class="p">):</span>
+    <span class="n">consecutive_year_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">z_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">consecutive_year_blocks</span><span class="p">)</span>
+    <span class="n">x_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">consecutive_year_blocks</span><span class="p">)</span>
+    <span class="n">y_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">consecutive_year_blocks</span><span class="p">)</span>
+    <span class="n">c_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">consecutive_year_blocks</span><span class="p">)</span>
+
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">block_idx</span><span class="p">,</span> <span class="n">zs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z_blocks</span><span class="p">):</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rep_id</span><span class="si">}</span><span class="s2"> -- partisan_lean: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="n">INTERP_KIND</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="s2">&quot;cubic&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">x_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">y_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">c_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">text</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">x_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">y_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">c_blocks</span><span class="p">[</span><span class="n">block_idx</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">paths</span>
+</pre></div>
+</div>
+<p>And now we can use plotly to draw the resulting curves. For plotly we
+use the <code class="docutils literal notranslate"><span class="pre">Scatter3D</span></code> method, which supports a “lines” mode that can
+draw curves in 3D space. We can colour the curves by the partisan lean
+score we derived from the election data – in fact the colour can vary
+through the trace as the election margins vary. Since this is a plotly
+plot it is interactive, so you can rotate it around and view it from all
+angles.</p>
+<p>Unfortunately the interactive plotly plot does not embed into the documentation
+well, so we present here a static image. If you run this yourself, however,
+you will get the interactive version.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">traces</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">representative_id</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">representative_id</span> <span class="o">==</span> <span class="n">rep</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">representative_id</span> <span class="o">==</span> <span class="n">rep</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">representative_id</span> <span class="o">==</span> <span class="n">rep</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">partisan_lean</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">representative_id</span> <span class="o">==</span> <span class="n">rep</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">interpolate_paths</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">rep</span><span class="p">):</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+            <span class="n">hovertext</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+                <span class="n">cmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">cmid</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">cmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                <span class="n">cauto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">colorscale</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span>
+                <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span>
+                <span class="n">width</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">traces</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">aspectratio</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.5</span> <span class="p">),</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;UMAP-X&quot;</span><span class="p">,</span>
+        <span class="n">zaxis_title</span><span class="o">=</span><span class="s2">&quot;UMAP-Y&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">scene_camera</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">eye</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.75</span> <span class="p">)),</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig_widget</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">FigureWidget</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="n">fig_widget</span>
+</pre></div>
+</div>
+<img alt="_images/aligned_umap_politics_demo_spaghetti.png" src="_images/aligned_umap_politics_demo_spaghetti.png" />
+<p>This concludes our exploration for now.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aligned_umap_basic_usage.html" class="btn btn-neutral float-left" title="How to use AlignedUMAP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="precomputed_k-nn.html" class="btn btn-neutral float-right" title="Precomputed k-nn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

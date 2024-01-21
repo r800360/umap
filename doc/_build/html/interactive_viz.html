@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Visualizations &mdash; umap 0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1c40f30e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Exploratory Analysis of Interesting Datasets" href="exploratory_analysis.html" />
+    <link rel="prev" title="Performance Comparison of Dimension Reduction Implementations" href="performance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide / Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">How to Use UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Basic UMAP Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting UMAP results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibility.html">UMAP Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Transforming New Data with UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_transform.html">Inverse transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric_umap.html">Parametric (neural network) Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sparse.html">UMAP on sparse data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supervised.html">UMAP for Supervised Dimension Reduction and Metric Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Using UMAP for Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outliers.html">Outlier detection using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composing_models.html">Combining multiple UMAP models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="densmap_demo.html">Better Preserving Local Density with DensMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutual_nn_umap.html">Improving the Separation Between Similar Classes Using a Mutual k-NN Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="document_embedding.html">Document embedding using UMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedding_space.html">Embedding to non-Euclidean spaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_basic_usage.html">How to use AlignedUMAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aligned_umap_politics_demo.html">AlignedUMAP for Time Varying Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precomputed_k-nn.html">Precomputed k-nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Background on UMAP:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_umap_works.html">How UMAP Works</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Comparison of Dimension Reduction Implementations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples of UMAP usage</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interactive Visualizations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#umap-zoo">UMAP Zoo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tensorflow-embedding-projector">Tensorflow Embedding Projector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pixplot">PixPlot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#umap-explorer">UMAP Explorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#audio-explorer">Audio Explorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orion-search">Orion Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploring-fashion-mnist">Exploring Fashion MNIST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#esm-metagenomic-atlas">ESM Metagenomic Atlas</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">Exploratory Analysis of Interesting Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scientific_papers.html">Scientific Papers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">UMAP API Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">umap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Interactive Visualizations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/interactive_viz.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interactive-visualizations">
+<h1>Interactive Visualizations<a class="headerlink" href="#interactive-visualizations" title="Permalink to this heading"></a></h1>
+<p>UMAP has found use in a number of interesting interactive visualization projects, analyzing everything from
+images from photo archives, to word embedding, animal point clouds, and even sound. Sometimes it has also
+been used in interesting interactive tools that simply help a user to get an intuition for what the algorithm
+is doing (by applying it to intuitive 3D data). Below are some amazing projects that make use of UMAP.</p>
+<section id="umap-zoo">
+<h2>UMAP Zoo<a class="headerlink" href="#umap-zoo" title="Permalink to this heading"></a></h2>
+<p>An exploration of how UMAP behaves when dimension reducing point clouds of animals. It is
+interactive, letting you switch between 2D and 3D representations and has a wide selection
+of different animals. Attempting to guess the animal from the 2D UMAP representation is a
+fun game. In practice this tool can go a long way to helping to build at least some intuitions
+for what UMAP tends to do with data.</p>
+<a class="reference internal image-reference" href="_images/UMAP_zoo.png"><img alt="_images/UMAP_zoo.png" src="_images/UMAP_zoo.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://duhaime.s3.amazonaws.com/apps/umap-zoo/index.html">UMAP Zoo</a></p>
+<p>Thanks to Douglas Duhaime.</p>
+</section>
+<section id="tensorflow-embedding-projector">
+<h2>Tensorflow Embedding Projector<a class="headerlink" href="#tensorflow-embedding-projector" title="Permalink to this heading"></a></h2>
+<p>If you just want to explore UMAP embeddings of datasets then the Embedding Projector
+from Tensorflow is a great way to do that. As well as having a good interactive 3D view
+it also has facilities for inspecting and searching labels and tags on the data. By default
+it loads up word2vec vectors, but you can upload any data you wish. You can then select
+the UMAP option among the tabs for embeddings choices (alongside PCA and t-SNE).</p>
+<a class="reference internal image-reference" href="_images/embedding_projector.png"><img alt="_images/embedding_projector.png" src="_images/embedding_projector.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://projector.tensorflow.org/">Embedding Projector</a></p>
+<p>Thanks to Andy Coenen and the Embedding Projector team.</p>
+</section>
+<section id="pixplot">
+<h2>PixPlot<a class="headerlink" href="#pixplot" title="Permalink to this heading"></a></h2>
+<p>PixPlot provides an overview of large photo-collections. In the demonstration app
+from Yale’s Digital Humanities lab it provides a window on the Meserve-Kunhardt Collection
+of historical photographs. The approach uses convolutional neural nets to reduce the images
+to 2048 dimensions, and then uses UMAP to present them in a 2-dimensional map which the
+user can interactive pan and zoom around in. This process results in similar photos
+ending up in similar regions of the map allowing for easy perusal of large photo
+collections. The PixPlot project is also available on github in case you wish to train
+it on your own photo collection.</p>
+<a class="reference internal image-reference" href="_images/pixplot.png"><img alt="_images/pixplot.png" src="_images/pixplot.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://dhlab.yale.edu/projects/pixplot/">PixPlot</a></p>
+<p>Thanks to Douglas Duhaime and the Digital Humanities lab at Yale.</p>
+</section>
+<section id="umap-explorer">
+<h2>UMAP Explorer<a class="headerlink" href="#umap-explorer" title="Permalink to this heading"></a></h2>
+<p>A great demonstration of building a web based app for interactively exploring a UMAP embedding.
+In this case it provides an exploration of UMAP run on the MNIST digits dataset. Each point in
+the embedding is rendered as the digit image, and coloured according to the digit class. Mousing
+over the images will make them larger and provide a view of the digit in the upper left. You can also pan
+and zoom around the emebdding to get a better understanding of how UMAP has mapped the different styles of
+handwritten digits down to 2 dimensions.</p>
+<a class="reference internal image-reference" href="_images/umap_explorer.png"><img alt="_images/umap_explorer.png" src="_images/umap_explorer.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://grantcuster.github.io/umap-explorer/">UMAP Explorer</a></p>
+<p>Thanks to Grant Custer.</p>
+</section>
+<section id="audio-explorer">
+<h2>Audio Explorer<a class="headerlink" href="#audio-explorer" title="Permalink to this heading"></a></h2>
+<p>The Audio Explorer uses UMAP to embed sound samples into a 2 dimensional space for easy exploration.
+The goal here is to take a large library of sounds samples and put similar sounds in similar regions
+of the map, allowing a user to quickly mouse over and listen to various variations of a given sample
+to quickly find exactly the right sound sample to use. Audio explorer uses MFCCs and/or WaveNet to
+provide an initial useful vector representation of the sound samples, before applying UMAP to
+generate the 2D embedding.</p>
+<a class="reference internal image-reference" href="_images/audio_explorer.png"><img alt="_images/audio_explorer.png" src="_images/audio_explorer.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="http://doc.gold.ac.uk/~lfedd001/three/demo.html">Audio Explorer</a></p>
+<p>Thanks to Leon Fedden.</p>
+</section>
+<section id="orion-search">
+<h2>Orion Search<a class="headerlink" href="#orion-search" title="Permalink to this heading"></a></h2>
+<p>Orion is an open source research measurement and knowledge discovery tool that enables you to monitor
+progress in science, visually explore the scientific landscape and search for relevant publications.
+Orion encodes bioRxiv paper abstracts to dense vectors with Sentence Transformers and projects them to
+an interactive 3D visualisation with UMAP. You can filter the UMAP embeddings by topic and country.
+You can also select a subset of the UMAP embeddings and retrieve those papers and their metadata.</p>
+<a class="reference internal image-reference" href="_images/orion_particles.png"><img alt="_images/orion_particles.png" src="_images/orion_particles.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://www.orion-search.org/">Orion Search</a></p>
+<p>Thanks to Kostas Stathoulopoulos, Zac Ioannidis and Lilia Villafuerte.</p>
+</section>
+<section id="exploring-fashion-mnist">
+<h2>Exploring Fashion MNIST<a class="headerlink" href="#exploring-fashion-mnist" title="Permalink to this heading"></a></h2>
+<p>A web based interactive exploration of a 3D UMAP embedding ran on the Fashion MNIST dataset. Users can
+freely navigate the 3D space, jumping to a specific image by clicking an image or entering an image id.
+Like Grant Custer’s UMAP Explorer, each point is rendered as the actual image and colored according to
+the label. It is also similar to the Tensorflow Embedding Projector, but designed more specifically for
+Fashion MNIST, thus more efficient and capable of showing all the 70k images.</p>
+<a class="reference internal image-reference" href="_images/exploring_fashion_mnist.png"><img alt="_images/exploring_fashion_mnist.png" src="_images/exploring_fashion_mnist.png" style="width: 400px;" /></a>
+<p><a class="reference external" href="https://observablehq.com/&#64;stwind/exploring-fashion-mnist/">Exploring Fashion MNIST</a></p>
+<p>Thanks to stwind.</p>
+</section>
+<section id="esm-metagenomic-atlas">
+<h2>ESM Metagenomic Atlas<a class="headerlink" href="#esm-metagenomic-atlas" title="Permalink to this heading"></a></h2>
+<p>The ESM Metagenomic Atlas contains over 600 million predicted protein structures, revealing the
+metagenomic world in a way we have never seen before. The Explore page visualizes a sample of 1
+million of these. (That’s about how much a browser can handle.) We represent each protein in this
+dataset as a single point, and reveal the actual protein structure when zooming in or when hovering
+over it. The color of each point corresponds to the similarity to the closest match we could find in
+UniRef90, the reference database of known protein sequences. The position in the map is a
+two-dimensional projection, which groups sequences by similarity, as determined by our language
+model’s internal representation. The map reveals structure at different scales: local neighbors in
+the same cluster tend to have similar structures, while nearby clusters preserve certain patterns
+like secondary structure elements.</p>
+<a class="reference internal image-reference" href="_images/ESM_metagenomic_atlas.png"><img alt="_images/ESM_metagenomic_atlas.png" src="_images/ESM_metagenomic_atlas.png" style="width: 400px;" /></a>
+<p>Thanks to the authors of “Evolutionary-scale prediction of atomic level protein structure
+with a language model”.</p>
+<p><a class="reference external" href="https://esmatlas.com/explore">ESM Metagenomic Atlas</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="performance.html" class="btn btn-neutral float-left" title="Performance Comparison of Dimension Reduction Implementations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exploratory_analysis.html" class="btn btn-neutral float-right" title="Exploratory Analysis of Interesting Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Leland McInnes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
